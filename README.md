@@ -11,14 +11,38 @@ Este projeto MVP demonstra a capacidade de provisionar infraestrutura na nuvem d
 
 Criar uma solução que implemente:
 
-1. **Infraestrutura como código (IaC)**
+1. **Infrastructure as code**
+- Provisionamento recursos de infraestrutura na AWS.
+    - Load balancer
+    - ECS
+    - RDS
+    - S3
+    - DynamoDB
     
-    Provisionamento completo de recursos de infraestrutura na AWS.
-    
-2. **API REST**
-    
-    Uma aplicação Node.js funcional com rotas e integração a banco de dados.
+2. **Application Fullstack**
+- Desenvolvimento de uma aplicação Node.js fullstack.
+    - API REST (CRUD)
+    - React (Front-end para consumir a API)
     
 3. **Pripeline CI/CD**
-    
-    Processos automátizados para testes (Unitários e de Integração) e deploys para garantir a confiabilidade e agilidade.
+- Automatização de processos para Integração contínua e Deploy contínuo.
+    - Unit test
+    - Integration test
+    - Pipeline Deploy
+
+## Contexto da aplicação
+Desafio de processo seletivo para vaga de Backend Developer & DevOps
+
+## Requisitos de Software
+
+#### aws cli
+```powershell
+aws-cli/2.22.11 Python/3.12.6 Windows/10 exe/AMD64
+```
+
+#### Terraform
+```powershell
+Terraform v1.10.1
+on windows_amd64
++ provider registry.terraform.io/hashicorp/aws v4.67.0
+```
