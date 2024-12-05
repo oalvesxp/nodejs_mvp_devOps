@@ -3,7 +3,7 @@ Minimum Viable Product
 
 Seja bem-vindo!
 
-Este documento apresenta o desenvolvimento de um MVP (*Minimum Viable Product*, ou em português, *Produto Mínimo Viável*). Nele, demonstro o processo de automação de uma aplicação utilizando práticas modernas de DevOps para uma API REST desenvolvida em Node.js.
+Este documento apresenta o desenvolvimento de um MVP (*Minimum Viable Product*, ou em português, *Produto Mínimo Viável*). Nele, demonstro o processo de automação de uma aplicação utilizando práticas modernas de DevOps para uma aplicação fullstack desenvolvida em Node.js.
 
 Este projeto MVP demonstra a capacidade de provisionar infraestrutura na nuvem de maneira programática e integrar uma esteira de CI/CD eficiente, com foco em confiabilidade, escalabilidade e boas práticas de desenvolvimento.
 
@@ -34,6 +34,8 @@ Criar uma solução que implemente:
 Desafio de processo seletivo para vaga de Backend Developer & DevOps
 
 ## Requisitos de Software
+
+Neste projeto foi utilizado as seguintes versões de software:
 
 #### aws cli
 ```powershell
