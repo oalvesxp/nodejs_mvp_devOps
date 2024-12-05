@@ -7,5 +7,6 @@ variable "bucket_name" {
 
 variable "table_name" {
   description = "DynamoDB table name for Terraform locks"
+  type        = string
   default     = "locking-831511089306-us-east-1"
 }
