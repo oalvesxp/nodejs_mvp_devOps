@@ -1,0 +1,31 @@
+{
+  "name": "app_backend",
+  "version": "1.0.0",
+  "description": "MVP: Simple node.js app backend running on AWS ECS Fargate",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "tsx watch --no-warnings src/server.ts"
+  },
+  "keywords": [
+    "serverless",
+    "ecs",
+    "fargate"
+  ],
+  "author": "Osvaldo Alves",
+  "license": "MIT",
+  "devDependencies": {
+    "@rocketseat/eslint-config": "^2.2.2",
+    "@types/node": "^22.10.1",
+    "eslint": "^9.16.0",
+    "prisma": "^6.0.1",
+    "tsup": "^8.3.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "@prisma/client": "6.0.1",
+    "dotenv": "16.4.7",
+    "fastify": "5.1.0",
+    "zod": "3.23.8"
+  }
+}
