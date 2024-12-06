@@ -17,9 +17,14 @@ terraform {
   required_version = ">= 1.2.0"
 }
 
-
+# modules
 module "backend" {
   source      = "./modules/backend"
   bucket_name = local.bucket_name
   table_name  = local.table_name
+}
+
+module "ecr" {
+  source        = "./modules/ecr"
+  ecr_repo_name = local.ecr_repo_name
 }
