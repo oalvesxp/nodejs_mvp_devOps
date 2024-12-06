@@ -4,8 +4,8 @@ WORKDIR /src
 
 COPY ./package.json .
 RUN npm install
-COPY ./src/ .
+COPY ./src ./src
 
 EXPOSE 3333
 
-CMD ["node", "./src/server.js"]
+CMD ["npm", "run", "start"]
