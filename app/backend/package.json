@@ -7,7 +7,9 @@
     "node": "20.18.1"
   },
   "scripts": {
-    "start:dev": "tsx watch --no-warnings src/server.ts"
+    "start:dev": "tsx watch --no-warnings src/server.ts",
+    "start": "node build/server.js",
+    "build": "tsup src --out-dir build"
   },
   "keywords": [
     "serverless",
