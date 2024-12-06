@@ -14,13 +14,13 @@
   "author": "Osvaldo Alves",
   "license": "MIT",
   "devDependencies": {
-    "@rocketseat/eslint-config": "^2.2.2",
-    "@types/node": "^22.10.1",
-    "eslint": "^9.16.0",
-    "prisma": "^6.0.1",
-    "tsup": "^8.3.5",
-    "tsx": "^4.19.2",
-    "typescript": "^5.7.2"
+    "@rocketseat/eslint-config": "2.2.2",
+    "@types/node": "22.10.1",
+    "eslint": "9.16.0",
+    "prisma": "6.0.1",
+    "tsup": "8.3.5",
+    "tsx": "4.19.2",
+    "typescript": "5.7.2"
   },
   "dependencies": {
     "@prisma/client": "6.0.1",
