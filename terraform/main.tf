@@ -1,4 +1,12 @@
 terraform {
+  backend "s3" {
+    bucket         = "mvp-nodejs"
+    key            = "mvp/nodejs/devops/terraform.tfstate"
+    region         = "us-east-1"
+    dynamodb_table = "mvp-nodejs"
+    encrypt        = true
+  }
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
