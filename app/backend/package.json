@@ -10,7 +10,8 @@
     "start:dev": "tsx watch --no-warnings src/server.ts",
     "start": "node build/server.js",
     "build": "tsup src --out-dir build",
-    "test:unit": "vitest run --dir src/use-cases"
+    "test:unit": "vitest run --dir src/use-cases",
+    "test:integration": "vitest run --dir src/http"
   },
   "keywords": [
     "serverless",
@@ -22,9 +23,11 @@
   "devDependencies": {
     "@rocketseat/eslint-config": "2.2.2",
     "@types/node": "22.10.1",
+    "@types/supertest": "6.0.2",
     "@vitest/ui": "0.28.5",
     "eslint": "9.16.0",
     "prisma": "6.0.1",
+    "supertest": "7.0.0",
     "tsup": "8.3.5",
     "tsx": "4.19.2",
     "typescript": "5.7.2",
