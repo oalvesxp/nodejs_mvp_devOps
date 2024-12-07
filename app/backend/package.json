@@ -21,11 +21,13 @@
   "devDependencies": {
     "@rocketseat/eslint-config": "2.2.2",
     "@types/node": "22.10.1",
+    "@vitest/ui": "0.28.5",
     "eslint": "9.16.0",
     "prisma": "6.0.1",
     "tsup": "8.3.5",
     "tsx": "4.19.2",
-    "typescript": "5.7.2"
+    "typescript": "5.7.2",
+    "vitest": "0.28.5"
   },
   "dependencies": {
     "@fastify/cors": "10.0.1",
