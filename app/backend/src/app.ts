@@ -12,7 +12,7 @@ import {
 import { ZodError } from 'zod'
 import { env } from './env'
 
-import { helloRoutes } from './http/controllers/routes'
+import { taskRoutes } from './http/controllers/routes'
 /** end imports */
 
 export const app = fastify().withTypeProvider<ZodTypeProvider>()
@@ -39,7 +39,7 @@ app.register(fastifySwaggerUi, {
 })
 
 // routes
-app.register(helloRoutes)
+app.register(taskRoutes)
 
 app.setErrorHandler((error, _, rep) => {
   if (error instanceof ZodError) {
