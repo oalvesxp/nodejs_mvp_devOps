@@ -4,7 +4,7 @@ import { TasksRepository } from '../tasks.repository'
 
 export class PrismaTasksRepository implements TasksRepository {
 
-  async create(data: Prisma.TaskUncheckedCreateInput): Promise<Task> {
+  async create(data: Prisma.TaskCreateInput): Promise<Task> {
     const task = await prisma.task.create({ data })
 
     return task
