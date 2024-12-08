@@ -1,7 +1,7 @@
 import { PrismaTasksRepository } from '@/repositories/prisma/prisma-tasks.repository'
 import { FetchTasksUseCase } from '../fetch-tasks.use-case'
 
-export function MakeFetchTasksUseCaseFactory() {
+export function makeFetchTasksUseCaseFactory() {
   const tasksRepository = new PrismaTasksRepository()
   const useCase = new FetchTasksUseCase(tasksRepository)
 
