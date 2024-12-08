@@ -19,5 +19,5 @@ export async function createTaskController(
     description
   })
 
-  rep.status(201).send({})
+  return rep.status(201).send({})
 }
