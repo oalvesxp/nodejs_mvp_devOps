@@ -3,6 +3,16 @@ import { Prisma, Task } from '@prisma/client'
 import { TasksRepository } from '../tasks.repository'
 
 export class PrismaTasksRepository implements TasksRepository {
+  async findById(id: string): Promise<Task | null> {
+    const task = await prisma.task.findUnique({
+      where: {
+        id
+      }
+    })
+
+    return task
+  }
+
   async findMany(page: number): Promise<Task[]> {
     const tasks = await prisma.task.findMany({
       take: 20,
