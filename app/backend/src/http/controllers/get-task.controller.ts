@@ -3,6 +3,8 @@ import { makeGetTaskUseCaseFactory } from '@/use-cases/factories/make-get-task.u
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
+import { TaskNotFoundError } from '@/use-cases/errors/task-not-found.error'
+
 const getTaskParamsSchema = z.object({
   id: z.string().uuid(),
 })
@@ -12,13 +14,18 @@ export async function getTaskController(
   rep: FastifyReply,
 ) {
   const { id } = getTaskParamsSchema.parse(req.params)
-  const getTaskUseCase = makeGetTaskUseCaseFactory()
 
-  console.log(id)
+  try {
+    const getTaskUseCase = makeGetTaskUseCaseFactory()
+    const { task } = await getTaskUseCase.execute({
+      id
+    })
 
-  const { task } = await getTaskUseCase.execute({
-    id
-  })
+    return rep.status(200).send({ task })
 
-  return rep.status(200).send({ task })
+  } catch (err) {
+    if (err instanceof TaskNotFoundError) {
+      return rep.status(404).send({ message: err.message })
+    }
+  }
 }
