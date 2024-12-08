@@ -1,6 +1,8 @@
 import { FastifyInstance } from 'fastify'
-import { createTaskController } from './create-task.controller'
 import { z } from 'zod'
+
+import { createTaskController } from './create-task.controller'
+import { fetchTasksController } from './fetch-tasks.controller'
 
 export async function taskRoutes(app: FastifyInstance) {
   app.post('/tasks', {
@@ -17,4 +19,26 @@ export async function taskRoutes(app: FastifyInstance) {
       }
     }
   }, createTaskController)
+
+  app.get('/tasks', {
+    schema: {
+      tags: ['tasks'],
+      description: 'Fetch tasks',
+      operationId: 'fetchTasks',
+      response: {
+        200: z.object({
+          tasks: z.array(
+            z.object({
+              id: z.string(),
+              title: z.string(),
+              description: z.string().nullable(),
+              created_at: z.string(),
+              updated_at: z.string(),
+              completed_at: z.string().nullable(),
+            })
+          )
+        })
+      }
+    }
+  }, fetchTasksController)
 }
