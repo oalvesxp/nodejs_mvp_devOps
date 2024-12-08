@@ -1,4 +1,4 @@
-import { MakeCreateTaskUseCaseFactory } from '@/use-cases/factories/make-create-task.use-case.factory'
+import { makeCreateTaskUseCaseFactory } from '@/use-cases/factories/make-create-task.use-case.factory'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
@@ -12,7 +12,7 @@ export async function createTaskController(
   rep: FastifyReply,
 ) {
   const { title, description } = createTaskBodySchema.parse(req.body)
-  const createTaskUseCase = MakeCreateTaskUseCaseFactory()
+  const createTaskUseCase = makeCreateTaskUseCaseFactory()
 
   await createTaskUseCase.execute({
     title,
