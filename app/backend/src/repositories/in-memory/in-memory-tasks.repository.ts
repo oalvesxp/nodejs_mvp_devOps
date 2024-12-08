@@ -6,6 +6,13 @@ import { randomUUID } from 'crypto'
 export class InMemoryTasksRepository implements TasksRepository {
   public items: Task[] = []
 
+  async findById(id: string): Promise<Task | null> {
+    const task = this.items.find((item) => item.id === id)
+    if (!task) return null
+
+    return task
+  }
+
   async findMany(page: number): Promise<Task[]> {
     return this.items
       .slice((page - 1) * 20, page * 20)
