@@ -17,7 +17,7 @@ export async function fetchTasksController(
     page
   })
 
-  return rep.status(201).send({
+  return rep.status(200).send({
     tasks
   })
 }
