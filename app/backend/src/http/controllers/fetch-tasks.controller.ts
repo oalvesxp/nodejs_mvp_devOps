@@ -2,7 +2,7 @@ import { makeFetchTasksUseCaseFactory } from '@/use-cases/factories/make-fetch-t
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
-const fetchTasksBodySchema = z.object({
+const fetchTasksQuerySchema = z.object({
   page: z.coerce.number().min(1).default(1),
 })
 
@@ -10,7 +10,7 @@ export async function fetchTasksController(
   req: FastifyRequest,
   rep: FastifyReply,
 ) {
-  const { page } = fetchTasksBodySchema.parse(req.body)
+  const { page } = fetchTasksQuerySchema.parse(req.query)
   const createTaskUseCase = makeFetchTasksUseCaseFactory()
 
   const { tasks } = await createTaskUseCase.execute({
