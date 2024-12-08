@@ -3,9 +3,10 @@ import { z } from 'zod'
 
 import { createTaskController } from './create-task.controller'
 import { fetchTasksController } from './fetch-tasks.controller'
+import { getTaskController } from './get-task.controller'
 
 export async function taskRoutes(app: FastifyInstance) {
-  app.post('/tasks', {
+  app.post('/', {
     schema: {
       tags: ['tasks'],
       description: 'Register a new task',
@@ -20,7 +21,30 @@ export async function taskRoutes(app: FastifyInstance) {
     }
   }, createTaskController)
 
-  app.get('/tasks', {
+  app.get('/:id', {
+    schema: {
+      tags: ['tasks'],
+      description: 'Get task',
+      operationId: 'getTasks',
+      response: {
+        200: z.object({
+          task: z.object({
+            id: z.string(),
+            title: z.string(),
+            description: z.string().nullable(),
+            created_at: z.date(),
+            updated_at: z.date(),
+            completed_at: z.date().nullable(),
+          })
+        }),
+        404: z.object({
+          message: z.string()
+        })
+      }
+    }
+  }, getTaskController)
+
+  app.get('/', {
     schema: {
       tags: ['tasks'],
       description: 'Fetch tasks',
@@ -41,4 +65,12 @@ export async function taskRoutes(app: FastifyInstance) {
       }
     }
   }, fetchTasksController)
+
+
+  /** todo
+   * 
+  app.put('tasks/:id', {}, updateTaskController)
+  app.patch('tasks/:id', {}, completeTaskController)
+  app.delet('tasks/:id, {}, deleteTaskController)
+   */
 }
