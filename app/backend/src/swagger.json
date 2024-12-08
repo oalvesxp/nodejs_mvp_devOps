@@ -84,13 +84,16 @@
                             "nullable": true
                           },
                           "created_at": {
-                            "type": "string"
+                            "type": "string",
+                            "format": "date-time"
                           },
                           "updated_at": {
-                            "type": "string"
+                            "type": "string",
+                            "format": "date-time"
                           },
                           "completed_at": {
                             "type": "string",
+                            "format": "date-time",
                             "nullable": true
                           }
                         },

@@ -32,9 +32,9 @@ export async function taskRoutes(app: FastifyInstance) {
               id: z.string(),
               title: z.string(),
               description: z.string().nullable(),
-              created_at: z.string(),
-              updated_at: z.string(),
-              completed_at: z.string().nullable(),
+              created_at: z.date(),
+              updated_at: z.date(),
+              completed_at: z.date().nullable(),
             })
           )
         })
