@@ -13,7 +13,7 @@ describe('[Integration] Get Task Controller', () => {
     await app.close()
   })
 
-  it('Should be able to create a task', async () => {
+  it('Should be able to get a task', async () => {
     const task = await prisma.task.create({
       data: {
         title: 'Task 01',
