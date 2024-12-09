@@ -34,9 +34,6 @@ describe('[Integration] Fetch Tasks Controller', () => {
         page: 1
       })
 
-    console.log('Response status:', response.status)
-    console.log('Response body:', response.body)
-
     expect(response.status).toBe(200)
     expect(response.body.tasks).toHaveLength(2)
   })
