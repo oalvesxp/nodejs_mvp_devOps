@@ -1,0 +1,7 @@
+# prisma
+docker-compose.yml
+prisma/vitest-environment-prisma
+
+# node
+node_modules
+.env.example
