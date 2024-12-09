@@ -18,10 +18,15 @@ describe('Complete Task Use Case', () => {
       description: 'This is a new task'
     })
 
-    const { task } = await sut.execute({
+    const { task: taskCompleted } = await sut.execute({
       id: createTask.id,
     })
 
-    expect(task?.completed_at).toEqual(expect.any(Date))
+    const { task: taskUncompleted } = await sut.execute({
+      id: createTask.id,
+    })
+
+    expect(taskCompleted?.completed_at).toEqual(expect.any(Date))
+    expect(taskUncompleted?.completed_at).toEqual(null)
   })
 })

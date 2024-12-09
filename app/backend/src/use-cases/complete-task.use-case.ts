@@ -21,7 +21,10 @@ export class CompleteTaskUseCase {
       throw new TaskNotFoundError()
     }
 
-    const task = await this.tasksRepository.complete(id)
+    const taskIsCompleted = !!taskById.completed_at
+    const completed_at = taskIsCompleted ? null : new Date()
+
+    const task = await this.tasksRepository.complete(id, completed_at)
 
     return {
       task

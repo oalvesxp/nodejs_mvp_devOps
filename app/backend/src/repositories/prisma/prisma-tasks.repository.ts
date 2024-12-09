@@ -3,7 +3,7 @@ import { Prisma, Task } from '@prisma/client'
 import { TasksRepository } from '../tasks.repository'
 
 export class PrismaTasksRepository implements TasksRepository {
-  async complete(id: string): Promise<Task | null> {
+  async complete(id: string, completed_at: Date | null): Promise<Task | null> {
     const taskById = await prisma.task.findUnique({
       where: {
         id
@@ -19,7 +19,7 @@ export class PrismaTasksRepository implements TasksRepository {
         id
       },
       data: {
-        completed_at: new Date()
+        completed_at
       }
     })
 

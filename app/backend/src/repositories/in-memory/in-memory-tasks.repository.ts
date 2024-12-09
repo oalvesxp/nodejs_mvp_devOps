@@ -6,7 +6,7 @@ import { randomUUID } from 'crypto'
 export class InMemoryTasksRepository implements TasksRepository {
   public items: Task[] = []
 
-  async complete(id: string): Promise<Task | null> {
+  async complete(id: string, completed_at: Date | null): Promise<Task | null> {
     const taskIndex = this.items.findIndex((item) => item.id === id)
 
     if (taskIndex < 0) {
@@ -15,7 +15,7 @@ export class InMemoryTasksRepository implements TasksRepository {
 
     const task = this.items[taskIndex] = {
       ...this.items[taskIndex],
-      completed_at: new Date()
+      completed_at
     }
 
     return task
