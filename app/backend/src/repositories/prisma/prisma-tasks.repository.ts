@@ -3,6 +3,26 @@ import { Prisma, Task } from '@prisma/client'
 import { TasksRepository } from '../tasks.repository'
 
 export class PrismaTasksRepository implements TasksRepository {
+  async delete(id: string): Promise<boolean> {
+    const taskById = await prisma.task.findUnique({
+      where: {
+        id
+      }
+    })
+
+    if (!taskById) {
+      return false
+    }
+
+    await prisma.task.delete({
+      where: {
+        id
+      }
+    })
+
+    return true
+  }
+
   async complete(id: string, completed_at: Date | null): Promise<Task | null> {
     const taskById = await prisma.task.findUnique({
       where: {
