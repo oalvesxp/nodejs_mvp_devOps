@@ -28,7 +28,7 @@ app.register(fastifySwagger, {
   openapi: {
     info: {
       title: 'Flash Tasks API',
-      version: '1.0.0'
+      version: '1.4.0'
     }
   },
   transform: jsonSchemaTransform
