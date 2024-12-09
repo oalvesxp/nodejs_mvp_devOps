@@ -5,6 +5,8 @@ import { createTaskController } from './create-task.controller'
 import { fetchTasksController } from './fetch-tasks.controller'
 import { getTaskController } from './get-task.controller'
 import { updateTaskController } from './update-task.controller'
+import { completeTaskController } from './complete-task.controller'
+import { deleteTaskController } from './delete-task.controller'
 
 export async function taskRoutes(app: FastifyInstance) {
   app.post('/', {
@@ -26,7 +28,7 @@ export async function taskRoutes(app: FastifyInstance) {
     schema: {
       tags: ['tasks'],
       description: 'Get task',
-      operationId: 'getTasks',
+      operationId: 'getTask',
       response: {
         200: z.object({
           task: z.object({
@@ -70,8 +72,8 @@ export async function taskRoutes(app: FastifyInstance) {
   app.put('/:id', {
     schema: {
       tags: ['tasks'],
-      description: 'Update tasks',
-      operationId: 'updateTasks',
+      description: 'Update task',
+      operationId: 'updateTask',
       body: z.object({
         title: z.string().optional(),
         description: z.string().nullable().optional()
@@ -88,9 +90,40 @@ export async function taskRoutes(app: FastifyInstance) {
     }
   }, updateTaskController)
 
-  /** todo
-   * 
-  app.patch('/:id/complete', {}, completeTaskController)
-  app.delet('/:id, {}, deleteTaskController)
-   */
+  app.patch('/:id/complete', {
+    schema: {
+      tags: ['tasks'],
+      description: 'Complete task',
+      operationId: 'completeTask',
+      response: {
+        200: z.object({
+          task: z.object({
+            id: z.string(),
+            title: z.string(),
+            description: z.string().nullable(),
+            created_at: z.date(),
+            updated_at: z.date(),
+            completed_at: z.date().nullable(),
+          })
+        }),
+        404: z.object({
+          message: z.string()
+        })
+      }
+    }
+  }, completeTaskController)
+
+  app.delete('/:id', {
+    schema: {
+      tags: ['tasks'],
+      description: 'Delete task',
+      operationId: 'deleteTask',
+      response: {
+        204: z.object({}),
+        404: z.object({
+          message: z.string()
+        })
+      }
+    }
+  }, deleteTaskController)
 }

@@ -6,6 +6,32 @@ import { randomUUID } from 'crypto'
 export class InMemoryTasksRepository implements TasksRepository {
   public items: Task[] = []
 
+  async delete(id: string): Promise<boolean> {
+    const taskIndex = this.items.findIndex((item) => item.id === id)
+
+    if (taskIndex < 0) {
+      return false
+    }
+
+    this.items.splice(taskIndex, 1)
+    return true
+  }
+
+  async complete(id: string, completed_at: Date | null): Promise<Task | null> {
+    const taskIndex = this.items.findIndex((item) => item.id === id)
+
+    if (taskIndex < 0) {
+      return null
+    }
+
+    const task = this.items[taskIndex] = {
+      ...this.items[taskIndex],
+      completed_at
+    }
+
+    return task
+  }
+
   async update(data: Prisma.TaskUpdateInput): Promise<Task | null> {
     const taskIndex = this.items.findIndex((item) => item.id === data.id)
 
