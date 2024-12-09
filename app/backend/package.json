@@ -10,7 +10,12 @@
     "start:dev": "tsx watch --no-warnings src/server.ts",
     "start": "node build/server.js",
     "build": "tsup src --out-dir build",
+    "test:create:env": "npm link ./prisma/vitest-environment-prisma",
+    "test:install:env": "npm link vitest-environment-prisma",
+    "test:unit:watch": "vitest --dir src/use-cases",
     "test:unit": "vitest run --dir src/use-cases",
+    "pretest:integration": "run-s test:create:env test:install:env",
+    "test:integration:watch": "vitest --dir src/http",
     "test:integration": "vitest run --dir src/http"
   },
   "keywords": [
@@ -26,6 +31,7 @@
     "@types/supertest": "6.0.2",
     "@vitest/ui": "0.28.5",
     "eslint": "9.16.0",
+    "npm-run-all": "4.1.5",
     "prisma": "6.0.1",
     "supertest": "7.0.0",
     "tsup": "8.3.5",

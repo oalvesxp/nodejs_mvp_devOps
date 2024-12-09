@@ -39,7 +39,7 @@ app.register(fastifySwaggerUi, {
 })
 
 // routes
-app.register(taskRoutes)
+app.register(taskRoutes, { prefix: 'tasks' })
 
 app.setErrorHandler((error, _, rep) => {
   if (error instanceof ZodError) {
