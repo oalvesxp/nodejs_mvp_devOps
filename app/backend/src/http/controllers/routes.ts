@@ -6,6 +6,7 @@ import { fetchTasksController } from './fetch-tasks.controller'
 import { getTaskController } from './get-task.controller'
 import { updateTaskController } from './update-task.controller'
 import { completeTaskController } from './complete-task.controller'
+import { deleteTaskController } from './delete-task.controller'
 
 export async function taskRoutes(app: FastifyInstance) {
   app.post('/', {
@@ -112,8 +113,17 @@ export async function taskRoutes(app: FastifyInstance) {
     }
   }, completeTaskController)
 
-  /** todo
-   * 
-  app.delet('/:id, {}, deleteTaskController)
-   */
+  app.delete('/:id', {
+    schema: {
+      tags: ['tasks'],
+      description: 'Delete task',
+      operationId: 'deleteTask',
+      response: {
+        204: z.object({}),
+        404: z.object({
+          message: z.string()
+        })
+      }
+    }
+  }, deleteTaskController)
 }
