@@ -6,6 +6,26 @@ import { randomUUID } from 'crypto'
 export class InMemoryTasksRepository implements TasksRepository {
   public items: Task[] = []
 
+  async update(data: Prisma.TaskUncheckedUpdateInput): Promise<Task | null> {
+    const taskIndex = this.items.findIndex((item) => item.id === data.id)
+
+    if (taskIndex < 0) {
+      return null
+    }
+
+    const task = this.items[taskIndex] = {
+      ...this.items[taskIndex],
+      title: data.title !== undefined
+        ? (data.title as string)
+        : this.items[taskIndex].title,
+      description: data.description !== undefined
+        ? (data.description as string | null)
+        : this.items[taskIndex].description,
+    }
+
+    return task
+  }
+
   async findById(id: string): Promise<Task | null> {
     const task = this.items.find((item) => item.id === id)
     if (!task) return null
