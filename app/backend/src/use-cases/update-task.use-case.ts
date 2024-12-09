@@ -7,7 +7,7 @@ import { MandatoryDataError } from './errors/mandatory-data.error'
 interface UpdateTaskUseCaseRequest {
   id: string
   title?: string
-  description?: string
+  description?: string | null
 }
 
 interface UpdateTaskUseCaseResponse {
