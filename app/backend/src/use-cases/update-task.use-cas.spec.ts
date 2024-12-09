@@ -42,4 +42,13 @@ describe('Update Task Use Case', () => {
       })
     ).rejects.toBeInstanceOf(MandatoryDataError)
   })
+
+  it('Should not be able to update a non-existent task', async () => {
+    await expect(() =>
+      sut.execute({
+        id: randomUUID(),
+        title: 'Task 10'
+      })
+    ).rejects.toBeInstanceOf(TaskNotFoundError)
+  })
 })
