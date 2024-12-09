@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { createTaskController } from './create-task.controller'
 import { fetchTasksController } from './fetch-tasks.controller'
 import { getTaskController } from './get-task.controller'
+import { updateTaskController } from './update-task.controller'
 
 export async function taskRoutes(app: FastifyInstance) {
   app.post('/', {
@@ -66,11 +67,30 @@ export async function taskRoutes(app: FastifyInstance) {
     }
   }, fetchTasksController)
 
+  app.put('/:id', {
+    schema: {
+      tags: ['tasks'],
+      description: 'Update tasks',
+      operationId: 'updateTasks',
+      body: z.object({
+        title: z.string().optional(),
+        description: z.string().nullable().optional()
+      }),
+      response: {
+        204: z.object({}),
+        400: z.object({
+          message: z.string()
+        }),
+        404: z.object({
+          message: z.string()
+        })
+      }
+    }
+  }, updateTaskController)
 
   /** todo
    * 
-  app.put('tasks/:id', {}, updateTaskController)
-  app.patch('tasks/:id', {}, completeTaskController)
-  app.delet('tasks/:id, {}, deleteTaskController)
+  app.patch('/:id/complete', {}, completeTaskController)
+  app.delet('/:id, {}, deleteTaskController)
    */
 }
