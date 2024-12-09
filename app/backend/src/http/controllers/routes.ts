@@ -95,7 +95,16 @@ export async function taskRoutes(app: FastifyInstance) {
       description: 'Complete task',
       operationId: 'completeTask',
       response: {
-        204: z.object({}),
+        200: z.object({
+          task: z.object({
+            id: z.string(),
+            title: z.string(),
+            description: z.string().nullable(),
+            created_at: z.date(),
+            updated_at: z.date(),
+            completed_at: z.date().nullable(),
+          })
+        }),
         404: z.object({
           message: z.string()
         })

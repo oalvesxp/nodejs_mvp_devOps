@@ -17,11 +17,11 @@ export async function completeTaskController(
 
   try {
     const completeTaskUseCase = makeCompleteTaskUseCaseFactory()
-    await completeTaskUseCase.execute({
+    const { task } = await completeTaskUseCase.execute({
       id
     })
 
-    return rep.status(204).send({})
+    return rep.status(200).send({ task })
 
   } catch (err) {
     if (err instanceof TaskNotFoundError) {
