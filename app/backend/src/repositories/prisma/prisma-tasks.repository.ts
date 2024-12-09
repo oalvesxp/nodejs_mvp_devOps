@@ -3,6 +3,29 @@ import { Prisma, Task } from '@prisma/client'
 import { TasksRepository } from '../tasks.repository'
 
 export class PrismaTasksRepository implements TasksRepository {
+  async complete(id: string): Promise<Task | null> {
+    const taskById = await prisma.task.findUnique({
+      where: {
+        id
+      }
+    })
+
+    if (!taskById) {
+      return null
+    }
+
+    const task = await prisma.task.update({
+      where: {
+        id
+      },
+      data: {
+        completed_at: new Date()
+      }
+    })
+
+    return task
+  }
+
   async update(data: Prisma.TaskUpdateInput): Promise<Task | null> {
     const taskById = await prisma.task.findUnique({
       where: {
