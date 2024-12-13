@@ -18,7 +18,7 @@ resource "aws_security_group" "this" {
   }
 
   tags = {
-    "Name" = local.namespaced_service_name
+    "Name" = "${local.namespaced_service_name}-bastion-host"
   }
 }
 
@@ -30,6 +30,6 @@ resource "aws_instance" "this" {
   vpc_security_group_ids = [aws_security_group.this.id]
 
   tags = {
-    "Name" = local.namespaced_service_name
+    "Name" = "${local.namespaced_service_name}-bastion-host"
   }
 }
