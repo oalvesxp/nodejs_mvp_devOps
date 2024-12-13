@@ -9,3 +9,14 @@ variable "environment" {
   type        = string
   default     = "dev"
 }
+
+variable "service_name" {
+  description = "The name of the service the bastion host is associated with, used for naming and tagging resources in AWS"
+  type        = string
+  default     = "express-todo-api"
+}
+
+variable "allowed_ip" {
+  description = "IP address/CIDR block allowed to SSH into the bastion host. Use Caution to restrict access to known IPs for security"
+  type        = string
+}
