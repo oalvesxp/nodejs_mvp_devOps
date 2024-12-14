@@ -1,5 +1,5 @@
 resource "aws_ecr_repository" "this" {
-  name         = local.namespaced_department_name
+  name         = "${local.namespaced_department_name}-api"
   force_delete = var.force_delete_repo
 }
 
