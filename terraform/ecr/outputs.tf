@@ -20,5 +20,5 @@ output "repository_url" {
 
 output "version" {
   description = "The ECR image version"
-  value       = random_id.version.id
+  value       = local.package_version
 }

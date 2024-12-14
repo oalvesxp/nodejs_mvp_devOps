@@ -4,6 +4,10 @@ locals {
   namespaced_department_name = "${var.department_name}-${var.environment}"
   namespaced_service_name    = "${var.service_name}-${var.environment}"
 
+  # ECS
+  api_container_name = "${local.namespaced_service_name}-api"
+  api_app_image      = var.ecs_api.app_image != "" ? var.ecs_api.app_image : "${data.terraform_remote_state.ecr.outputs.repository_url}:${data.terraform_remote_state.ecr.outputs.version}"
+
   # network
   vpc     = data.terraform_remote_state.network.outputs.vpc
   subnets = data.terraform_remote_state.network.outputs.subnets
