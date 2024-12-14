@@ -15,3 +15,27 @@ variable "service_name" {
   type        = string
   default     = "express-todo-api"
 }
+
+variable "department_name" {
+  description = "Name of the department responsible for the VPC, e.g., 'enginnering', 'operations'. Helps in identifying ownership of the resources"
+  type        = string
+  default     = "engineering" # enginnering, operations, developer, qa, etc.
+}
+
+variable "app_folder_api" {
+  description = "Local Filesystem path to the application's source code. This might be used for context in scripts on documentation. Default is '../../services/api'"
+  type        = string
+  default     = "../../services/api"
+}
+
+variable "app_folder_webapp" {
+  description = "Local Filesystem path to the application's source code. This might be used for context in scripts on documentation. Default is '../../services/webapp'"
+  type        = string
+  default     = "../../services/webapp"
+}
+
+variable "force_delete_repo" {
+  description = "Flag to determine whether the ECR repository should be forcefully deleted even if it contains images. Set to 'true' to enable force deletion."
+  type        = bool
+  default     = true
+}

@@ -1,5 +1,6 @@
 locals {
-  namespaced_service_name = "${var.service_name}-${var.environment}"
+  namespaced_department_name = "${var.department_name}-${var.environment}"
+  namespaced_service_name    = "${var.service_name}-${var.environment}"
 
   common_tags = {
     Project    = "Node.js MVP DevOps"
