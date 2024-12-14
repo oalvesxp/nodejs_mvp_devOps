@@ -8,6 +8,9 @@ locals {
   vpc     = data.terraform_remote_state.network.outputs.vpc
   subnets = data.terraform_remote_state.network.outputs.subnets
 
+  # database
+  db_name = data.terraform_remote_state.db.outputs.database_name
+
   common_tags = {
     Project    = "Node.js MVP DevOps"
     Component  = "ECS Fargate"
