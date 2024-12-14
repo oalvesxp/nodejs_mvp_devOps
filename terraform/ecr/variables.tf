@@ -22,13 +22,13 @@ variable "department_name" {
   default     = "engineering" # enginnering, operations, developer, qa, etc.
 }
 
-variable "app_folder_api" {
+variable "api_folder" {
   description = "Local Filesystem path to the application's source code. This might be used for context in scripts on documentation. Default is '../../services/api'"
   type        = string
   default     = "../../services/api"
 }
 
-variable "app_folder_webapp" {
+variable "webapp_folder" {
   description = "Local Filesystem path to the application's source code. This might be used for context in scripts on documentation. Default is '../../services/webapp'"
   type        = string
   default     = "../../services/webapp"

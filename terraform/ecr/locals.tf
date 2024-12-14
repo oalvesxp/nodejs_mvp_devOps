@@ -1,6 +1,19 @@
 locals {
+  account_id                 = data.aws_caller_identity.current.account_id
   namespaced_department_name = "${var.department_name}-${var.environment}"
   namespaced_service_name    = "${var.service_name}-${var.environment}"
+  service_file_hash = sha1(
+    join(
+      "",
+      [
+        for file in fileset("${var.api_folder}/src", "**")
+        : filesha1("${var.api_folder}/src/${file}")
+      ]
+    )
+  )
+
+  package_version = "v-${random_id.version.id}"
+
 
   common_tags = {
     Project    = "Node.js MVP DevOps"

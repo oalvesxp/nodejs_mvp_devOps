@@ -1,7 +1,6 @@
 resource "aws_ecr_repository" "this" {
-  name                 = local.namespaced_department_name
-  image_tag_mutability = "IMMUTABLE"
-  force_delete         = var.force_delete_repo
+  name         = local.namespaced_department_name
+  force_delete = var.force_delete_repo
 }
 
 resource "aws_ecr_lifecycle_policy" "this" {
@@ -20,4 +19,30 @@ resource "aws_ecr_lifecycle_policy" "this" {
       }
     }]
   })
+}
+
+resource "terraform_data" "build_image_api" {
+  triggers_replace = {
+    hash = local.service_file_hash
+  }
+
+  provisioner "local-exec" {
+    working_dir = var.api_folder
+    command     = "aws ecr get-login-password --region ${var.aws_region} | docker login --username AWS --password-stdin ${local.account_id}.dkr.ecr.${var.aws_region}.amazonaws.com"
+  }
+
+  provisioner "local-exec" {
+    working_dir = var.api_folder
+    command     = "docker build -t ${local.namespaced_service_name} ."
+  }
+
+  provisioner "local-exec" {
+    working_dir = var.api_folder
+    command     = "docker tag ${local.namespaced_service_name} ${aws_ecr_repository.this.repository_url}:${local.package_version}"
+  }
+
+  provisioner "local-exec" {
+    working_dir = var.api_folder
+    command     = "docker push ${aws_ecr_repository.this.repository_url}:${local.package_version}"
+  }
 }
