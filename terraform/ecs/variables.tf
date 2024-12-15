@@ -13,7 +13,7 @@ variable "environment" {
 variable "service_name" {
   description = "The name of the service the bastion host is associated with, used for naming and tagging resources in AWS"
   type        = string
-  default     = "express-todo-api"
+  default     = "express-todo"
 }
 
 variable "department_name" {
@@ -47,4 +47,10 @@ variable "log_level" {
   description = "Defines the logging level for the application, affecting the verbosity of logs, e.g., 'info', 'debug'"
   type        = string
   default     = "info"
+}
+
+variable "log_retention_days" {
+  description = "Specifies the duration in days that logs are retained in Cloudwatch before being deleted, e.g., '5' days"
+  type        = number
+  default     = 5
 }
