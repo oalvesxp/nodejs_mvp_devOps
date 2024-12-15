@@ -22,6 +22,11 @@ resource "aws_ecs_task_definition" "api" {
       name  = local.api_container_name
       image = local.api_app_image
 
+      portMappings = [{
+        containerPort = var.ecs_api.app_port
+        hostPort      = var.ecs_api.app_port
+      }]
+
       logConfiguration = {
         logDriver = "awslogs",
         options = {
@@ -31,12 +36,7 @@ resource "aws_ecs_task_definition" "api" {
         }
       }
 
-      portMappings = [{
-        containerPort = var.ecs_api.app_port
-        hostPort      = var.ecs_api.app_port
-      }]
-
-      evironment = [
+      environment = [
         {
           name  = "ENV"
           value = var.environment
@@ -59,7 +59,7 @@ resource "aws_ecs_task_definition" "api" {
         },
         {
           name  = "DATABASE_URL"
-          value = ""
+          value = "postgresql://${local.db_user}:${urlencode(local.db_pass)}@${local.db_host}:${local.db_port}/${local.db_name}?schema=public"
         },
         {
           name  = "AWS_NODEJS_CONNECTIONS_REUSE_ENABLED"

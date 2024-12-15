@@ -13,7 +13,11 @@ locals {
   subnets = data.terraform_remote_state.network.outputs.subnets
 
   # database
+  db_host = data.terraform_remote_state.db.outputs.database_endpoint
   db_name = data.terraform_remote_state.db.outputs.database_name
+  db_user = data.terraform_remote_state.db.outputs.database_username
+  db_port = data.terraform_remote_state.db.outputs.database_port
+  db_pass = jsondecode(data.aws_secretsmanager_secret_version.rds_password.secret_string)["password"]
 
   common_tags = {
     Project    = "Node.js MVP DevOps"
