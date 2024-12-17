@@ -38,6 +38,11 @@ app.register(fastifySwaggerUi, {
   routePrefix: 'docs'
 })
 
+// API health check
+app.get('/health', (_, rep) => {
+  return rep.status(200).send()
+})
+
 // routes
 app.register(taskRoutes, { prefix: 'tasks' })
 
@@ -48,7 +53,7 @@ app.setErrorHandler((error, _, rep) => {
       .send({ message: 'Validation error.', issues: error.format() })
   }
 
-  if (env.NODE_ENV !== 'prod') {
+  if (env.NODE_ENV !== 'production') {
     console.error(error)
   } else {
     // TODO : Here we should log to an external tool like DataDog/NewRelic/Sentry
