@@ -69,3 +69,33 @@ resource "aws_ecs_task_definition" "api" {
     },
   ])
 }
+
+resource "aws_ecs_service" "api" {
+  name                              = "${local.namespaced_service_name}-service"
+  cluster                           = aws_ecs_cluster.this.id
+  task_definition                   = aws_ecs_task_definition.api.arn
+  desired_count                     = var.ecs_api.app_count
+  launch_type                       = "FARGATE"
+  health_check_grace_period_seconds = 30
+
+  network_configuration {
+    subnets          = local.subnets.private.id
+    security_groups  = [aws_security_group.ecs_tasks.id]
+    assign_public_ip = false
+  }
+
+  load_balancer {
+    target_group_arn = aws_alb_target_group.api.arn
+    container_name   = local.api_container_name
+    container_port   = var.ecs_api.app_port
+  }
+
+  depends_on = [
+    aws_alb_listener.http
+  ]
+
+  # desired_count is ignored as it can change due to atoscaling policy
+  lifecycle {
+    ignore_changes = [desired_count]
+  }
+}
