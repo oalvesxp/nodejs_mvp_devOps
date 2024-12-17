@@ -1,0 +1,2 @@
+ssh -i "D:\aws\mvp-devops.pem" -f -N -L 5432:express-todo-api-dev-cluster.cluster-cmhwqrytzs7h.us-east-1.rds.amazonaws.com:5432 ubuntu@ec2-54-234-224-238.compute-1.amazonaws.com -v
+ssh -i "D:\aws\mvp-devops.pem" -N -L 5432:express-todo-api-dev-cluster.cluster-cmhwqrytzs7h.us-east-1.rds.amazonaws.com:5432 ubuntu@ec2-54-234-224-238.compute-1.amazonaws.com -v
