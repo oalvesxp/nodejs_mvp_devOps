@@ -2,6 +2,12 @@
 FROM node:20.18.1-alpine AS production
 WORKDIR /usr/src
 
+RUN apk add --no-cache \
+  openssl \
+  libssl3 \
+  libgcc \
+  libc6-compat
+
 COPY --chown=node:node package*.json ./
 RUN npm ci --production
 
