@@ -23,11 +23,12 @@ resource "aws_security_group" "this" {
 }
 
 resource "aws_instance" "this" {
-  ami                    = data.aws_ami.ubuntu.id
-  instance_type          = var.instance_type
-  key_name               = var.key_name
-  subnet_id              = local.subnets.public.id[0]
-  vpc_security_group_ids = [aws_security_group.this.id]
+  ami                         = data.aws_ami.ubuntu.id
+  instance_type               = var.instance_type
+  key_name                    = var.key_name
+  subnet_id                   = local.subnets.public.id[0]
+  vpc_security_group_ids      = [aws_security_group.this.id]
+  associate_public_ip_address = true
 
   tags = {
     "Name" = "${local.namespaced_service_name}-bastion-host"
