@@ -12,7 +12,7 @@ import {
 import { ZodError } from 'zod'
 import { env } from './env'
 
-import { taskRoutes } from './http/controllers/routes'
+import { taskRoutes } from './http/controllers/tasks/tasks.routes'
 /** end imports */
 
 export const app = fastify().withTypeProvider<ZodTypeProvider>()
