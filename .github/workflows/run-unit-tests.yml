@@ -16,16 +16,18 @@ jobs:
 
     steps:
       - name: Checkout code
-      - uses: actions/checkout@v3
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-      - uses: actions/setup-node@v3
+        uses: actions/setup-node@v3
         with:
           node-version: 20.18.1
           cache: npm
       
       - name: Install dependencies
-      - run: cd services/api/ && npm ci
+        working-directory: services/api/
+        run: npm ci
 
       - name: Run unit tests
-      - run: cd services/api/ && npm run test:unit
+        working-directory: services/api/
+        run: npm run test:unit
