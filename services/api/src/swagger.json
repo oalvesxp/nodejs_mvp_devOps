@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Flash Tasks API",
-    "version": "1.4.0"
+    "version": "1.4.1"
   },
   "components": {
     "schemas": {}
@@ -437,6 +437,30 @@
                     "message"
                   ],
                   "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/metrics/health": {
+      "get": {
+        "operationId": "healthCheck",
+        "tags": [
+          "metrics"
+        ],
+        "description": "Health check",
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "enum": [
+                    "null"
+                  ],
+                  "nullable": true
                 }
               }
             }
