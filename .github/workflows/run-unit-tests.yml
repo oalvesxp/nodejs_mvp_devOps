@@ -25,9 +25,7 @@ jobs:
           cache: npm
       
       - name: Install dependencies
-      - run: |
-        cd services/api/ && npm ci
+      - run: cd services/api/ && npm ci
 
       - name: Run unit tests
-      - run: |
-        cd services/api/ && npm run test:unit
+      - run: cd services/api/ && npm run test:unit
