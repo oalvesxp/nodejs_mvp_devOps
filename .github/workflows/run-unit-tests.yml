@@ -18,7 +18,7 @@ jobs:
         working-directory: 'services/api'
     strategy:
       matrix:
-      node-version: 20.18.1
+        node-version: [20.18.1]
 
     steps:
       - name: Checkout code
