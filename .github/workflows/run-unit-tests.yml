@@ -13,20 +13,19 @@ jobs:
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Check for lock file
-        run: test -f services/api/package-lock.json || echo "Error - package-lock.json is missing"
-      
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20.18.1
           cache: npm
+        working-directory: services/api/
       
+
       - name: Install dependencies
         working-directory: services/api/
         run: npm ci
