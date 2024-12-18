@@ -18,7 +18,7 @@ resource "aws_alb_target_group" "api" {
     protocol            = "HTTP"
     matcher             = "200"
     timeout             = "3"
-    path                = "/healthcheck"
+    path                = "/metrics/health"
   }
 }
 
