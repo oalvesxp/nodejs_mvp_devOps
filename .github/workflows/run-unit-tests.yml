@@ -13,17 +13,23 @@ jobs:
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-latest
+    defaults: 
+      run:
+        working-directory: 'services/api'
+    strategy:
+      matrix:
+      node-version: 20.18.1
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: Set up Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: 20.18.1
+          node-version: ${{ matrix.node-version }}
           cache: npm
-      
+          cache-dependency-path: 'services/api/package-lock.json'
 
       - name: Install dependencies
         run: npm ci
