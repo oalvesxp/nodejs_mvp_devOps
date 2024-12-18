@@ -39,7 +39,7 @@ variable "ecs_api" {
     app_port          = 9080
     app_count         = 1
     app_image         = ""
-    health_check_path = "/health"
+    health_check_path = "/metrics/health"
   }
 }
 
