@@ -7,9 +7,14 @@ export function Header() {
       <section className={styles.header__content}>
         <nav className={styles.navbar}>
           <Link to='/'>
-            Tarefas+
+            <h1 className={styles.logo}>
+              Tarefas<span>+</span>
+            </h1>
           </Link>
         </nav>
+        <button className={styles.header__button}>
+          Acessar
+        </button>
       </section>
     </header >
   )
