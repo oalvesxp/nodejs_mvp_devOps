@@ -4,8 +4,8 @@ import './globals.css'
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
-import FetchTasks from './pages/FetchTasks'
-import ListTaskById from './pages/ListTaskById'
+import FetchTasks from './pages/Tasks/Fetch'
+import ListTaskById from './pages/Tasks/ListById'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
