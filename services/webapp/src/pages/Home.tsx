@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { fetchTasks } from '../http/generated/tasks/tasks'
-import { type FetchTasks200TasksItem } from '../http/generated/api.schemas'
+import { fetchTasks } from '../hooks/api/tasks/tasks'
+import { type FetchTasks200TasksItem } from '../hooks/api/api.schemas'
 import '../Styles.css'
 
 function Home() {
