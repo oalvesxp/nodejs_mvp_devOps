@@ -1,12 +1,12 @@
 import { useParams } from 'react-router-dom'
 
 function ListTaskById() {
-  const { slug } = useParams()
+  const { id } = useParams()
 
   return (
     <>
       <h1>Tasks by ID</h1>
-      <p>This is the content of the blog post with slug {slug}.</p>
+      <p>This is the content of the blog post with slug {id}.</p>
     </>
   )
 }

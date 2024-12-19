@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { fetchTasks } from '@/hooks/api/tasks/tasks'
+import { fetchTasks } from '../../hooks/api/tasks/tasks'
 import { type FetchTasks200TasksItem } from '@/hooks/api/api.schemas'
 import dayjs from 'dayjs'
 
