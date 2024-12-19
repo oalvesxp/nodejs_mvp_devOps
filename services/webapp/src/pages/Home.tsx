@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { fetchTasks } from '../http/generated/tasks/tasks'
 import { type FetchTasks200TasksItem } from '../http/generated/api.schemas'
-import '../App.css'
+import '../Styles.css'
 
 function Home() {
   const [tasks, setTasks] = useState<FetchTasks200TasksItem[]>([])

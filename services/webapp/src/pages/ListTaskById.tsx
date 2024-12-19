@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import '../App.css'
+import '../Styles.css'
 
 function ListTaskById() {
   const { slug } = useParams()
