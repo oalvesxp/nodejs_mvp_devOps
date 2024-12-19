@@ -12,9 +12,11 @@ export function Header() {
             </h1>
           </Link>
         </nav>
-        <button className={styles.header__button}>
-          Acessar
-        </button>
+        <Link to='/tasks'>
+          <button className={styles.header__button}>
+            Acessar
+          </button>
+        </Link>
       </section>
     </header >
   )
