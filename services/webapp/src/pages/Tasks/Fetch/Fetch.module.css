@@ -78,7 +78,7 @@ ul {
   list-style: none;
   padding: 0;
   width: 100%;
-  max-width: 800px;
+  max-width: 600px;
 }
 
 .task__item {
@@ -124,4 +124,14 @@ ul {
 .task__description {
   font-size: 14px;
   margin-top: 4px;
+}
+
+@media screen and (max-width: 580px) {
+  .container__form {
+    max-width: 400px;
+  }
+
+  ul {
+    max-width: 400px;
+  }
 }
