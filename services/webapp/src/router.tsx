@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
-import Home from './routes/Home'
-import ListTaskById from './routes/ListTaskById'
+
+import Home from './pages/Home'
+import ListTaskById from './pages/ListTaskById'
 
 export const router = createBrowserRouter([
   {
