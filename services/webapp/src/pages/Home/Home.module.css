@@ -14,7 +14,7 @@
   justify-content: center;
 }
 
-.container__hero {
+.hero {
   max-width: 480px;
   object-fit: contain;
   width: auto;
@@ -24,4 +24,42 @@
 .container__title {
   text-align: center;
   margin: 28px;
+}
+
+.container__content {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.box {
+  background-color: #213547;
+  color: #ffffff;
+  padding: 14px 44px;
+  border-radius: 4px;
+  transition: transform 0.3s;
+}
+
+.box:hover {
+  transform: scale(1.08);
+}
+
+@media screen and (max-width: 580px) {
+  .hero {
+    max-width: 80%;
+  }
+
+  .container__title {
+    font-size: 24px;
+  }
+
+  .container__content {
+    flex-direction: column;
+  }
+
+  .box {
+    width: 70%;
+    margin-bottom: 14px;
+    text-align: center;
+  }
 }
