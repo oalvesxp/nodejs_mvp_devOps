@@ -31,6 +31,10 @@ ul {
   border-radius: 4px;
 }
 
+.task__edit {
+  transition: all 0.2s;
+}
+
 .task__edit:hover {
   transform: scale(1.1);
 }
@@ -48,6 +52,21 @@ ul {
 .task__description {
   font-size: 14px;
   margin-top: 4px;
+}
+
+.task__delete {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.task__delete:hover {
+  transform: scale(1.1);
 }
 
 @media screen and (max-width: 580px) {

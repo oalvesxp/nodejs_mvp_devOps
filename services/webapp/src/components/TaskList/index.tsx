@@ -1,7 +1,7 @@
 import styles from './TaskList.module.css'
 
 import { useEffect, useState } from 'react'
-import { fetchTasks } from '../../hooks/api/tasks/tasks'
+import { fetchTasks, deleteTask } from '../../hooks/api/tasks/tasks'
 import { type FetchTasks200TasksItem } from '@/hooks/api/api.schemas'
 
 import { FaRegEdit, FaTrash } from 'react-icons/fa'
@@ -10,13 +10,26 @@ import { Link } from 'react-router-dom'
 export function TaskList() {
   const [tasks, setTasks] = useState<FetchTasks200TasksItem[]>([])
 
-  useEffect(() => {
+  async function fetchManyTasks() {
     fetchTasks().then(items => {
       setTasks(items.data.tasks)
     }).catch((error) => {
       console.error('Error fetching tasks:', error)
     })
-  }, [])
+  }
+
+  async function handleDeleteTask(id: string) {
+    try {
+      await deleteTask(id)
+      fetchManyTasks()
+    } catch (err) {
+      console.error("Erro ao salvar a tarefa: ", err)
+    }
+  }
+
+  useEffect(() => {
+    fetchManyTasks()
+  }, [tasks])
 
   return (
     <ul>
@@ -28,7 +41,7 @@ export function TaskList() {
                 <label className={styles.task__completed}>Concluída</label>
               )}
               <Link to={"/tasks/" + task.id} >
-                <FaRegEdit size={22} color='#0089cc' />
+                <FaRegEdit className={styles.task__edit} size={22} color='#0089cc' />
               </Link>
             </div>
             <div className={styles.task__info}>
@@ -36,9 +49,10 @@ export function TaskList() {
               <p className={styles.task__description}>{task.description}</p>
             </div>
           </div>
-          <Link to={"/tasks/" + task.id + "/delete"} >
+
+          <button className={styles.task__delete} onClick={() => handleDeleteTask(task.id)}>
             <FaTrash size={22} color='#f44336' />
-          </Link>
+          </button>
         </li>
       ))}
     </ul>
