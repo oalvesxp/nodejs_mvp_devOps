@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react'
+import { ChangeEvent, FormEvent } from 'react'
 import styles from './Fetch.module.css'
 
 import { createTask } from '../../../hooks/api/tasks/tasks'
@@ -21,9 +21,15 @@ function Tasks() {
     }));
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
     try {
       await createTask(formData)
+      setFormData({
+        title: '',
+        description: ''
+      })
     } catch (err) {
       console.error("Erro ao salvar a tarefa: ", err)
     }
@@ -54,7 +60,11 @@ function Tasks() {
                 value={formData.description}
                 onChange={handleInputChange}
               ></textarea>
-              <button className={styles.container__form__button} type="submit">
+              <button
+                className={styles.container__form__button}
+                type="submit"
+                disabled={!formData.title.trim()}
+              >
                 Salvar
               </button>
             </form>

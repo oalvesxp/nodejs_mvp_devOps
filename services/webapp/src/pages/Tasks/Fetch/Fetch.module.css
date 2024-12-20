@@ -60,6 +60,13 @@
   opacity: 0.9;
 }
 
+.container__form__button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #d3d3d3;
+  color: #4e4e4e;
+}
+
 .container__content {
   display: flex;
   flex-direction: column;
