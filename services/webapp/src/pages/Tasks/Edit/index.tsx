@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 
-function ListTaskById() {
+function EditTask() {
   const { id } = useParams()
 
   return (
@@ -11,4 +11,4 @@ function ListTaskById() {
   )
 }
 
-export default ListTaskById
+export default EditTask

@@ -3,9 +3,10 @@ import { createRoot } from 'react-dom/client'
 import './globals.css'
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
 import Home from './pages/Home'
-import FetchTasks from './pages/Tasks/Fetch'
-import ListTaskById from './pages/Tasks/ListById'
+import Tasks from './pages/Tasks/Home'
+import EditTask from './pages/Tasks/Edit'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -17,12 +18,8 @@ createRoot(document.getElementById('root')!).render(
         </Route>
 
         <Route path='/tasks'>
-          <Route index element={<FetchTasks />} />
-          <Route path=':id' element={<ListTaskById />} />
-          <Route path=':id/create' element={null} />
-          <Route path=':id/edit' element={null} />
-          <Route path=':id/complete' element={null} />
-          <Route path=':id/delete' element={null} />
+          <Route index element={<Tasks />} />
+          <Route path=':id/edit' element={<EditTask />} />
         </Route>
 
       </Routes>
