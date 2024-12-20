@@ -9,7 +9,7 @@ export default defineConfig({
       mode: 'tags-split',
       httpClient: 'fetch',
       client: 'fetch',
-      baseUrl: 'http://localhost:9080'
+      baseUrl: 'http://localhost:3000'
     }
   }
 })

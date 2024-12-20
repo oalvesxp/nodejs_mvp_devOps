@@ -20,7 +20,7 @@ export type healthCheckResponse = {
 export const getHealthCheckUrl = () => {
 
 
-  return `http://localhost:9080/metrics/health`
+  return `http://localhost:3000/metrics/health`
 }
 
 export const healthCheck = async ( options?: RequestInit): Promise<healthCheckResponse> => {
