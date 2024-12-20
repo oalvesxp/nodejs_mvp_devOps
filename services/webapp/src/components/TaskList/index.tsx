@@ -40,7 +40,7 @@ export function TaskList() {
               {task.completed_at && (
                 <label className={styles.task__completed}>Concluída</label>
               )}
-              <Link to={'/tasks/' + task.id + '/edit'} >
+              <Link to={'/tasks/' + task.id} >
                 <FaRegEdit className={styles.task__edit} size={22} color='#0089cc' />
               </Link>
             </div>

@@ -19,7 +19,7 @@ createRoot(document.getElementById('root')!).render(
 
         <Route path='/tasks'>
           <Route index element={<Tasks />} />
-          <Route path=':id/edit' element={<EditTask />} />
+          <Route path=':id' element={<EditTask />} />
         </Route>
 
       </Routes>
