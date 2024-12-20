@@ -14,7 +14,7 @@ export function Header() {
         </nav>
         <Link to='/tasks'>
           <button className={styles.header__button}>
-            Acessar
+            Minha lista
           </button>
         </Link>
       </section>
