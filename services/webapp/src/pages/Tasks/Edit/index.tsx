@@ -97,7 +97,7 @@ function EditTask() {
               <button
                 type="button"
                 className={styles.button__complete}
-                onClick={() => handleCompleteTask(task.id)}
+                onClick={() => task && handleCompleteTask(task.id)}
               >
                 Encerrar tarefa
               </button>
