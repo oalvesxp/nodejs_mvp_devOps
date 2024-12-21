@@ -1,17 +1,25 @@
-import { ChangeEvent, FormEvent } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import styles from './Fetch.module.css'
 
-import { createTask } from '../../../hooks/api/tasks/tasks'
-
+import { createTask, fetchTasks } from '../../../hooks/api/tasks/tasks'
+import { FetchTasks200TasksItem } from '@/hooks/api/api.schemas'
 import { Header } from '../../../components/Header'
-import { TaskList } from '../../../components/TaskList'
-import { useState } from 'react'
+
+import { FaRegEdit, FaTrash } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 
 function Tasks() {
+  const [tasks, setTasks] = useState<FetchTasks200TasksItem[]>([])
+  const [isChanged, setIsChanged] = useState(false)
   const [formData, setFormData] = useState({
     title: "",
     description: ""
   })
+
+  async function fetchManyTasks() {
+    const res = await fetchTasks()
+    setTasks(res.data.tasks)
+  }
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -30,10 +38,30 @@ function Tasks() {
         title: '',
         description: ''
       })
+      setIsChanged(!isChanged)
     } catch (err) {
       console.error("Erro ao salvar a tarefa: ", err)
     }
   }
+
+  async function handleDeleteTask(id: string) {
+    await fetch('http://localhost:3000/tasks/' + id, {
+      method: 'DELETE'
+    })
+
+    setIsChanged(!isChanged)
+  }
+
+  useEffect(() => {
+    fetchManyTasks()
+  }, [])
+
+  useEffect(() => {
+    if (isChanged) {
+      fetchManyTasks()
+      setIsChanged(!isChanged)
+    }
+  }, [isChanged])
 
   return (
     <>
@@ -75,7 +103,30 @@ function Tasks() {
         <section className={styles.container__content}>
           <h2 className={styles.container__content__subtitle}>Minhas tarefas</h2>
 
-          <TaskList />
+          <ul>
+            {tasks.map(task => (
+              <li className={styles.task__item} key={task.id}>
+                <div className={styles.task_item_content}>
+                  <div className={styles.task__status}>
+                    {task.completed_at && (
+                      <label className={styles.task__completed}>Concluída</label>
+                    )}
+                    <Link to={'/tasks/' + task.id} >
+                      <FaRegEdit className={styles.task__edit} size={22} color='#0089cc' />
+                    </Link>
+                  </div>
+                  <div className={styles.task__info}>
+                    <span className={styles.task__title}>{task.title}</span>
+                    <p className={styles.task__description}>{task.description}</p>
+                  </div>
+                </div>
+
+                <button className={styles.task__delete} onClick={() => handleDeleteTask(task.id)}>
+                  <FaTrash size={22} color='#f44336' />
+                </button>
+              </li>
+            ))}
+          </ul>
         </section>
       </main>
     </>
