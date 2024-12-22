@@ -1,5 +1,5 @@
 services:
-  task-api-db:
+  db:
     image: bitnami/postgresql
     ports:
       - 5432:5432
@@ -8,13 +8,13 @@ services:
       - POSTGRESQL_PASSWORD=D7uli0o71H
       - POSTGRESQL_DATABASE=mvp_db
 
-  task-api:
+  app:
     build:
       context: ./
       dockerfile: Dockerfile
     ports:
       - 9080:9080
     env_file:
-      - ./.env
+      - ./.env.development.local
     depends_on:
-      - task-api-db
+      - db
