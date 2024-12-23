@@ -8,7 +8,7 @@ resource "aws_ecs_cluster" "this" {
 }
 
 resource "aws_ecs_task_definition" "api" {
-  family             = local.namespaced_service_name
+  family             = "${local.namespaced_service_name}-api"
   execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
   task_role_arn      = aws_iam_role.ecs_task_role.arn
 
@@ -71,7 +71,7 @@ resource "aws_ecs_task_definition" "api" {
 }
 
 resource "aws_ecs_service" "api" {
-  name                              = "${local.namespaced_service_name}-service"
+  name                              = "${local.namespaced_service_name}-service-api"
   cluster                           = aws_ecs_cluster.this.id
   task_definition                   = aws_ecs_task_definition.api.arn
   desired_count                     = var.ecs_api.app_count
@@ -92,6 +92,87 @@ resource "aws_ecs_service" "api" {
 
   depends_on = [
     aws_alb_listener.http
+  ]
+
+  # desired_count is ignored as it can change due to atoscaling policy
+  lifecycle {
+    ignore_changes = [desired_count]
+  }
+}
+
+resource "aws_ecs_task_definition" "webapp" {
+  family             = "${local.namespaced_service_name}-webapp"
+  execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
+  # task_role_arn      = aws_iam_role.ecs_task_role.arn
+
+  requires_compatibilities = ["FARGATE"]
+  network_mode             = "awsvpc"
+  cpu                      = var.ecs_web.fargate_cpu
+  memory                   = var.ecs_web.fargate_memory
+
+  container_definitions = jsonencode([
+    {
+      name  = local.web_container_name
+      image = local.web_app_image
+
+      portMappings = [{
+        containerPort = var.ecs_web.app_port
+        hostPort      = var.ecs_web.app_port
+      }]
+
+      # logConfiguration = {
+      #   logDriver = "awslogs",
+      #   options = {
+      #     "awslogs-group"         = "/ecs/${local.namespaced_service_name}-webapp",
+      #     "awslogs-region"        = var.aws_region,
+      #     "awslogs-stream-prefix" = "ecswebapp",
+      #   }
+      # }
+
+      environment = [
+        {
+          name  = "ENV"
+          value = var.environment
+        },
+        {
+          name  = "LOG_LEVEL"
+          value = var.log_level
+        },
+        {
+          name  = "AWS_REGION"
+          value = var.aws_region
+        },
+        {
+          name  = "AWS_NODEJS_CONNECTIONS_REUSE_ENABLED"
+          value = "1"
+        },
+      ]
+    },
+  ])
+}
+
+resource "aws_ecs_service" "webapp" {
+  name                              = "${local.namespaced_service_name}-service-webapp"
+  cluster                           = aws_ecs_cluster.this.id
+  task_definition                   = aws_ecs_task_definition.webapp.arn
+  desired_count                     = var.ecs_web.app_count
+  launch_type                       = "FARGATE"
+  health_check_grace_period_seconds = 30
+
+  network_configuration {
+    subnets          = local.subnets.private.id
+    security_groups  = [aws_security_group.ecs_tasks.id]
+    assign_public_ip = false
+  }
+
+  load_balancer {
+    target_group_arn = aws_alb_target_group.webapp.arn
+    container_name   = local.web_container_name
+    container_port   = var.ecs_web.app_port
+  }
+
+  depends_on = [
+    aws_alb_listener.web
   ]
 
   # desired_count is ignored as it can change due to atoscaling policy

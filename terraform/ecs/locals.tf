@@ -4,9 +4,14 @@ locals {
   namespaced_department_name = "${var.department_name}-${var.environment}"
   namespaced_service_name    = "${var.service_name}-${var.environment}"
 
-  # ECS
+  # ecs
+  # api
   api_container_name = "${local.namespaced_service_name}-api"
-  api_app_image      = var.ecs_api.app_image != "" ? var.ecs_api.app_image : "${data.terraform_remote_state.ecr.outputs.repository_url}:${data.terraform_remote_state.ecr.outputs.version}"
+  api_app_image      = var.ecs_api.app_image != "" ? var.ecs_api.app_image : "${data.terraform_remote_state.ecr-api.outputs.repository_url}:${data.terraform_remote_state.ecr-api.outputs.version}"
+
+  # web
+  web_container_name = "${local.namespaced_service_name}-web"
+  web_app_image      = var.ecs_web.app_image != "" ? var.ecs_web.app_image : "${data.terraform_remote_state.ecr-webapp.outputs.repository_url}:${data.terraform_remote_state.ecr-webapp.outputs.version}"
 
   # network
   vpc     = data.terraform_remote_state.network.outputs.vpc

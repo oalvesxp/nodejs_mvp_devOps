@@ -6,7 +6,7 @@ resource "aws_alb" "this" {
 
 resource "aws_alb_target_group" "api" {
   vpc_id      = local.vpc.id
-  name        = local.namespaced_service_name
+  name        = "${local.namespaced_service_name}-api"
   port        = 9080
   protocol    = "HTTP"
   target_type = "ip"
@@ -22,6 +22,24 @@ resource "aws_alb_target_group" "api" {
   }
 }
 
+resource "aws_alb_target_group" "webapp" {
+  vpc_id      = local.vpc.id
+  name        = "${local.namespaced_service_name}-webapp"
+  port        = 80
+  protocol    = "HTTP"
+  target_type = "ip"
+
+  health_check {
+    unhealthy_threshold = 2
+    healthy_threshold   = 3
+    interval            = "30"
+    protocol            = "HTTP"
+    matcher             = "200"
+    timeout             = "3"
+    path                = "/health"
+  }
+}
+
 resource "aws_alb_listener" "http" {
   load_balancer_arn = aws_alb.this.arn
   port              = 9080
@@ -30,5 +48,16 @@ resource "aws_alb_listener" "http" {
   default_action {
     type             = "forward"
     target_group_arn = aws_alb_target_group.api.id
+  }
+}
+
+resource "aws_alb_listener" "web" {
+  load_balancer_arn = aws_alb.this.arn
+  port              = 80
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_alb_target_group.webapp.id
   }
 }

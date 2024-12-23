@@ -12,12 +12,22 @@ data "terraform_remote_state" "network" {
   }
 }
 
-data "terraform_remote_state" "ecr" {
+data "terraform_remote_state" "ecr-api" {
   backend = "s3"
 
   config = {
     bucket = "tfstate-2024-${data.aws_caller_identity.current.account_id}"
     key    = "mvp/nodejs-devOps/ecr/terraform.tfstate"
+    region = var.aws_region
+  }
+}
+
+data "terraform_remote_state" "ecr-webapp" {
+  backend = "s3"
+
+  config = {
+    bucket = "tfstate-2024-${data.aws_caller_identity.current.account_id}"
+    key    = "mvp/nodejs-devOps/ecr-webapp/terraform.tfstate"
     region = var.aws_region
   }
 }
