@@ -36,17 +36,20 @@ resource "aws_db_subnet_group" "this" {
 }
 
 resource "aws_db_instance" "this" {
+  identifier                  = "mvpdb"
   db_name                     = var.db_name
   username                    = var.db_user
   manage_master_user_password = true
   kms_key_id                  = aws_kms_key.this.arn
-  instance_class              = var.db_machine
-  engine                      = var.db_engine.engine
-  engine_version              = var.db_engine.version
-  allocated_storage           = 10
+
+  instance_class    = var.db_machine
+  engine            = var.db_engine.engine
+  engine_version    = var.db_engine.version
+  allocated_storage = 10
 
   storage_encrypted   = true
   publicly_accessible = false
+  skip_final_snapshot = true
 
   performance_insights_enabled    = true
   performance_insights_kms_key_id = aws_kms_key.this.arn
