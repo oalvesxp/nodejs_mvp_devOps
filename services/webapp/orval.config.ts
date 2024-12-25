@@ -1,4 +1,5 @@
 import { defineConfig } from 'orval'
+import { env } from './src/env'
 
 export default defineConfig({
   api: {
@@ -9,7 +10,7 @@ export default defineConfig({
       mode: 'tags-split',
       httpClient: 'fetch',
       client: 'fetch',
-      baseUrl: 'http://localhost:3000'
+      baseUrl: `${env.REACT_APP_API_URL}:3000`
     }
   }
 })
