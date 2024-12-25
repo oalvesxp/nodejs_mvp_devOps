@@ -38,7 +38,7 @@ resource "aws_internet_gateway" "this" {
   vpc_id = aws_vpc.this.id
 
   tags = {
-    "Name" = "mvpIG"
+    "Name" = "mvpInternetGateway"
   }
 }
 
@@ -64,11 +64,10 @@ resource "aws_route_table" "public" {
 }
 
 resource "aws_route_table" "private" {
-  count  = var.network.az_count
   vpc_id = aws_vpc.this.id
 
   tags = {
-    "Name" = "mvpPrivateRT-${local.selected_azs[count.index]}"
+    "Name" = "mvpPrivateRT"
   }
 }
 
@@ -83,6 +82,26 @@ resource "aws_route_table_association" "public" {
 resource "aws_route_table_association" "private" {
   count = var.network.az_count
 
-  route_table_id = aws_route_table.private.*.id[count.index]
+  route_table_id = aws_route_table.private.id
   subnet_id      = aws_subnet.private.*.id[count.index]
+}
+
+# nat gateway
+resource "aws_eip" "nat" {}
+
+resource "aws_nat_gateway" "this" {
+  allocation_id = aws_eip.nat.id
+  subnet_id     = aws_subnet.public[0].id
+
+  depends_on = [aws_internet_gateway.this]
+
+  tags = {
+    "Name" = "mvpNATGateway"
+  }
+}
+
+resource "aws_route" "private_nat" {
+  destination_cidr_block = "0.0.0.0/0"
+  route_table_id         = aws_route_table.private.id
+  nat_gateway_id         = aws_nat_gateway.this.id
 }
