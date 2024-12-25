@@ -45,7 +45,7 @@ function Tasks() {
   }
 
   async function handleDeleteTask(id: string) {
-    await fetch('http://localhost:3000/tasks/' + id, {
+    await fetch(`${process.env.REACT_APP_API_URL}:3000/tasks/` + id, {
       method: 'DELETE'
     })
 

@@ -6,14 +6,14 @@ services:
     environment:
       - POSTGRESQL_USERNAME=docker
       - POSTGRESQL_PASSWORD=D7uli0o71H
-      - POSTGRESQL_DATABASE=mvp_db
+      - POSTGRESQL_DATABASE=tasksdb
 
   app:
     build:
       context: ./
       dockerfile: Dockerfile
     ports:
-      - 9080:9080
+      - 3000:3000
     env_file:
       - ./.env.development.local
     depends_on:
