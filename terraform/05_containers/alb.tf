@@ -33,6 +33,6 @@ resource "aws_alb_listener" "this" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_alb_target_group.this[each.key].arn
+    target_group_arn = aws_alb_target_group.this[each.key].id
   }
 }

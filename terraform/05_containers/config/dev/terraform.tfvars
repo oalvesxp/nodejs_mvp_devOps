@@ -12,6 +12,7 @@ ecs_containers = [
     env_vars = [
       { name = "NODE_ENV", value = "dev" },
       { name = "APP_NAME", value = "backend" },
+      { name = "PORT", value = 3000 },
       { name = "LOG_LEVEL", value = "info" },
       { name = "AWS_REGION", value = "us-east-1" },
       { name = "AWS_NODEJS_CONNECTIONS_REUSE_ENABLED", value = "1" },

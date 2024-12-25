@@ -44,13 +44,18 @@ resource "aws_ecs_task_definition" "app" {
             name  = "DATABASE_URL",
             value = "postgresql://${local.db_user}:${urlencode(local.db_passwd)}@${local.db_host}/${local.db_name}?schema=public"
           }
-        ] : []
+          ] : [
+          {
+            name  = "REACT_APP_API_URL"
+            value = "http://${aws_alb.this.dns_name}"
+          }
+        ]
       ])
 
       logConfiguration = {
         logDriver = "awslogs"
         options = {
-          awslogs-group         = "ecs/${each.key}"
+          awslogs-group         = "/ecs/${each.key}"
           awslogs-region        = var.aws_region
           awslogs-stream-prefix = "ecs"
         }
@@ -79,6 +84,4 @@ resource "aws_ecs_service" "app" {
     container_name   = each.key
     container_port   = each.value.app_port
   }
-
-  depends_on = [aws_security_group.tasks]
 }
