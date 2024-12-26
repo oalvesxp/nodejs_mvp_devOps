@@ -9,16 +9,13 @@ jobs:
   tests:
     name: Task 01 - Backend Tests (Unit and Integration) 
     runs-on: ubuntu-latest
-    defaults: 
-      run:
-        working-directory: '.github/workflows'
   
     steps:
       - name: Integration Tests E2E
-        uses: run-integration-tests.yml
+        uses: ./.github/workflows/run-integration-tests.yml
 
       - name: Unit Tests
-        uses: run-unit-tests.yml
+        uses: ./.github/workflows/run-unit-tests.yml
     
   deploy-backend:
     name: Deploy Backend Code on AWS ECS
