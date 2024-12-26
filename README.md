@@ -65,4 +65,4 @@ Docker Compose version v2.30.3-desktop.1
 As instruções de uso estão separadas dentro do contexto de cada parte deste MVP.
 - [API](./services/api/README.md)
 - [Webapp](./services/webapp/README.md)
-- [Terraform]()
+- [Terraform](./terraform/README.md)
