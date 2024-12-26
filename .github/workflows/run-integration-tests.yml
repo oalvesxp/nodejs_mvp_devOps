@@ -15,9 +15,6 @@ jobs:
     defaults: 
       run:
         working-directory: 'services/api'
-    strategy:
-      matrix:
-        node-version: [20.18.1]
 
     services:
       postgres:
@@ -33,10 +30,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Set up Node.js ${{ matrix.node-version }}
+      - name: Set up Node.js ${{ vars.NODE_VERSION }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ vars.NODE_VERSION }}
           cache: npm
           cache-dependency-path: 'services/api/package-lock.json'
       
