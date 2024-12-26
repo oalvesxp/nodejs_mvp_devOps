@@ -17,9 +17,28 @@ jobs:
       DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
       DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
 
+  applytf:
+        runs-on: ubuntu-latest
+        name: "Apply TF"
+        permissions:
+            pull-requests: write
+            contents: read
+        defaults:
+            run:
+                working-directory: ./terraform/04_repository
+        steps:
+            - uses: actions/checkout@v3
+            - name: Setup Terraform
+              uses: hashicorp/setup-terraform@v2
+            - name: Terraform Init
+              id: init
+              run: terraform init
+            - name: Terraform apply
+              run: terraform apply -auto-approve -input=false
+
   deploy-backend:
     name: Deploy Backend Code on AWS ECS
-    needs: [unit-tests, integration-tests]
+    needs: [unit-tests, integration-tests, applytf]
     runs-on: ubuntu-latest
     defaults: 
       run:
@@ -56,7 +75,6 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -f .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
-
-
+          
   #     # - name: Force Update on ECS
   #     #   run: aws ecs update-service --cluster mvpcluster --service backend --force-new-deployment
