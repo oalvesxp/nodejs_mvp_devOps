@@ -13,22 +13,24 @@ Criar uma solução que implemente:
 
 1. **Infrastructure as code**
 - Provisionamento recursos de infraestrutura na AWS.
-    - Load balancer
-    - ECS
-    - RDS
-    - S3
-    - DynamoDB
+    - VPC (Virtual Private Network)
+    - EC2 (Elastic Compute 2)
+    - ALB (Amazon Load Balancer)
+    - ECS Fargate (Elastic Container Service)
+    - ECR (Elastic Container Registry)
+    - RDS (Relational Database Service)
+    - S3 (Simple Storage Service)
+    - DynamoDB (Database non-relational)
     
 2. **Application Fullstack**
 - Desenvolvimento de uma aplicação Node.js fullstack.
     - API REST (CRUD)
     - React (Front-end para consumir a API)
     
-3. **Pripeline CI/CD**
+3. **CI/CD**
 - Automatização de processos para Integração contínua e Deploy contínuo.
     - Unit test
     - Integration test
-    - Pipeline Deploy
 
 ## Contexto da aplicação
 Desafio de processo seletivo para vaga de Backend Developer & DevOps
@@ -48,3 +50,14 @@ Terraform v1.10.1
 on windows_amd64
 + provider registry.terraform.io/hashicorp/aws v4.67.0
 ```
+
+#### Node.js
+```powershell
+v20.18.1
+```
+
+## Como usar?
+As instruções de uso estão separadas dentro do contexto de cada parte deste MVP.
+- [API]()
+- [Webapp]()
+- [Terraform]()
