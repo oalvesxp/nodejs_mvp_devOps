@@ -11,23 +11,17 @@ env:
   AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
 
 jobs:
-  tests:
+  unit:
     name: Automated Tests
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      
-      - name: Unit
-        uses: ./.github/workflows/run-unit-tests.yml
-      
-      - name: E2E
-        uses: ./.github/workflows/run-integration-tests.yml
+    uses: ./.github/workflows/run-unit-tests.yml
+    
+  integration:
+    name: E2E
+    uses: ./.github/workflows/run-integration-tests.yml
   
   build:
     name: Generate Package
-    needs: tests
+    needs: [unit, integration]
     runs-on: ubuntu-latest
     defaults: 
       run:
