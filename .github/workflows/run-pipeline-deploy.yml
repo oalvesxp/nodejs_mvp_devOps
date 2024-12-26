@@ -22,9 +22,14 @@ jobs:
       DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
       DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
 
+  build-backend:
+    name: Build Node Package
+    needs: [unit-tests, integration-tests]
+    uses: ./.github/workflows/run-build-backend.yml
+
   deploy-backend:
     name: Deploy Backend Code on AWS ECS
-    needs: [unit-tests, integration-tests]
+    needs: [build-backend]
     runs-on: ubuntu-latest
     defaults: 
       run:
@@ -44,7 +49,7 @@ jobs:
       - name: Login on Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
-      
+
       - name: Build, Tag and Push Image to Amazon ECR
         id: build-image
         env:
