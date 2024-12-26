@@ -23,7 +23,7 @@ jobs:
       DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
   
   build:
-    name: Generate Package
+    name: Generate Backend Package
     needs: [unit, integration]
     runs-on: ubuntu-latest
     defaults: 
@@ -53,8 +53,8 @@ jobs:
           name: api
           path: services/api/build
     
-  deploy:
-    name: Deploy Hotfix
+  backend-package:
+    name: 'Backend: Push to AWS Registry'
     needs: build
     runs-on: ubuntu-latest
     defaults: 
@@ -91,7 +91,52 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: mvp-be-repo
-          IMAGE_TAG: v-${{ github.run_number }}
+          IMAGE_TAG: v${{ github.run_number }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+  frontend-package:
+    name: 'Frontend: Push to AWS Registry'
+    needs: build
+    runs-on: ubuntu-latest
+    defaults: 
+      run:
+        working-directory: 'services/webapp'
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Download Build Artifact
+        id: artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: api
+          path: services/api/build
+      
+      - name: Debug
+        run: ls -la
+
+      - name: Setup AWS CLI
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login on Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, Tag and Push Image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: mvp-fe-repo
+          IMAGE_TAG: v${{ github.run_number }}
+          REACT_APP_API_URL: "http://mvp-ecs-alb-1788440207.us-east-1.elb.amazonaws.com"
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG

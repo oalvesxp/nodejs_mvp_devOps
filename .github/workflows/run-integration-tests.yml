@@ -43,9 +43,9 @@ jobs:
       - name: Run migrations
         run: npx prisma migrate deploy
         env: 
-            DATABASE_URL: "postgresql://${{ secrets.DATABASE_USERNAME }}:${{ secrets.DATABASE_PASSWORD }}@localhost:5432/${{ vars.DATABASE_NAME }}?schema=public"
+          DATABASE_URL: "postgresql://${{ secrets.DATABASE_USERNAME }}:${{ secrets.DATABASE_PASSWORD }}@localhost:5432/${{ vars.DATABASE_NAME }}?schema=public"
       
       - name: Run integration tests
         run: npm run test:integration
         env: 
-            DATABASE_URL: "postgresql://${{ secrets.DATABASE_USERNAME }}:${{ secrets.DATABASE_PASSWORD }}@localhost:5432/${{ vars.DATABASE_NAME }}?schema=public"
+          DATABASE_URL: "postgresql://${{ secrets.DATABASE_USERNAME }}:${{ secrets.DATABASE_PASSWORD }}@localhost:5432/${{ vars.DATABASE_NAME }}?schema=public"
