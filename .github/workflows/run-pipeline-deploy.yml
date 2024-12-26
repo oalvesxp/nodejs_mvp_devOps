@@ -46,14 +46,15 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
       
       - name: Build, Tag and Push Image to Amazon ECR
+        id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: mvp-be-repo
-          IMAGE_TAG: v1.0.0
+          IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker-build -t img-be-nodejs .
-          docker tag img-be-nodejs $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
   #     # - name: Force Update on ECS
   #     #   run: aws ecs update-service --cluster mvpcluster --service backend --force-new-deployment
