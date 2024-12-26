@@ -6,17 +6,17 @@ on:
       - develop
 
 jobs:
-  tests:
-    name: Task 01 - Backend Tests (Unit and Integration) 
+  unit-tests:
+    name: Unit Tests  
+    uses: ./.github/workflows/run-unit-tests.yml
+  
+  integration-tests:
+    name: Integration Tests  
     uses: ./.github/workflows/run-integration-tests.yml
     secrets:
       DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
       DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-      
 
-      # - name: Unit Tests
-      #   uses: ./run-unit-tests.yml
-    
   # deploy-backend:
   #   name: Deploy Backend Code on AWS ECS
   #   needs: tests
