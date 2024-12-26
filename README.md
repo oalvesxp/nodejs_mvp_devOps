@@ -55,7 +55,7 @@ on windows_amd64
 v20.18.1
 ```
 
-### Docker & Docker Compose
+#### Docker & Docker Compose
 ```powershell
 Docker version 27.3.1, build ce12230
 Docker Compose version v2.30.3-desktop.1
