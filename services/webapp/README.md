@@ -14,6 +14,7 @@ O objetivo é ter uma UI simples para realizar a navegação e interação de CR
 - **Vite**: Ferramenta de build ultrarrápida.
 - **React**: Biblioteca para construção de interfaces.
 - **React Router**: Navegação de páginas SPA.
+- **Orval**: Construção automática das requisições Fetch através do Swagger da API.
 - **Fetch API**: Requisições HTTP para comunicação com a API Tasks+.
 
 ## Requisitos
