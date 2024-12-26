@@ -2,16 +2,6 @@ name: Run Integration Tests
 
 on:
   workflow_call:
-    inputs:
-      database_name:
-        required: true
-        type: string
-      database_username:
-        required: true
-        type: string
-      database_password:
-        required: true
-        type: string
     secrets:
       DATABASE_USERNAME:
         required: true
