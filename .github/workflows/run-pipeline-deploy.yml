@@ -23,7 +23,7 @@ jobs:
       DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
 
   build-package:
-    name: Build API Package
+    name: Generate Package
     needs: [unit-tests, integration-tests]
     uses: ./.github/workflows/run-build-backend.yml
 
@@ -39,6 +39,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
       
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: api-build
+
       - name: Setup AWS CLI
         uses: aws-actions/configure-aws-credentials@v3
         with:
