@@ -46,9 +46,6 @@ jobs:
       
       - name: Build Package
         run: npm run build
-      
-      - name: Debug
-        run: ls -la
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
@@ -73,6 +70,9 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: api
+      
+      - name: Debug
+        run: ls -la
 
       - name: Setup AWS CLI
         uses: aws-actions/configure-aws-credentials@v3
