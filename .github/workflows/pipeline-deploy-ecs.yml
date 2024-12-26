@@ -16,7 +16,7 @@ jobs:
     uses: ./.github/workflows/run-unit-tests.yml
     
   integration:
-    name: E2E
+    name: Automated Tests
     uses: ./.github/workflows/run-integration-tests.yml
     secrets:
       DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
@@ -70,6 +70,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: api
+          path: services/api/build
       
       - name: Debug
         run: ls -la

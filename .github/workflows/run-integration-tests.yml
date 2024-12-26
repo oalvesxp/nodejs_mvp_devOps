@@ -10,7 +10,7 @@ on:
 
 jobs:
   integration-tests:
-    name: Run Tests
+    name: Integration
     runs-on: ubuntu-latest
     defaults: 
       run:
