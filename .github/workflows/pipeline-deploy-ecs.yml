@@ -25,7 +25,7 @@ jobs:
   build:
     name: Generate Backend Package
     needs: [unit, integration]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     defaults: 
       run:
         working-directory: 'services/api'
@@ -56,7 +56,7 @@ jobs:
   backend-package:
     name: 'Backend: Push to AWS Registry'
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     defaults: 
       run:
         working-directory: 'services/api'
@@ -100,7 +100,7 @@ jobs:
   frontend-package:
     name: 'Frontend: Push to AWS Registry'
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     defaults: 
       run:
         working-directory: 'services/webapp'
