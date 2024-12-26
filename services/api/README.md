@@ -77,3 +77,14 @@ Aplique as migrations no banco de dados:
 ```powershell
 npx prisma migrate dev
 ```
+
+Acesse a sua API pelo navegador: 
+```powershell
+# swagger
+http://localhost:3000/docs
+```
+
+```powershell
+# Fetch tasks
+http://localhost:3000/tasks
+```
