@@ -2,7 +2,8 @@
 CRUD básico para controle de tarefas do usuário.
 
 ## Endpoints da Aplicação
-Rotas para realizar chamadas na API:
+Rotas para realizar chamadas na API.</br>
+**OBS:** Todas as rotas podem ser visualizadas e testadas através do swagger da aplicação no URL: http://localhost:3000/docs
 
 - GET
   - /tasks
