@@ -28,6 +28,13 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+
+      - name: Bump version and Push Tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_branches: "master,develop"
       
       - name: Setup AWS CLI
         uses: aws-actions/configure-aws-credentials@v3
@@ -37,17 +44,19 @@ jobs:
             aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Login on Amazon ECR
+        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
-        # run: aws ecr get-login-password --region ${{ secrets.AWS_REGION }} docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
-
-      # - name: Build Docker Image
-      #   run: docker-build -t img-be-nodejs .
-
-      # - name: Tag Docker Image
-      #   run: VERSION=$(date +%Y%m%d%H%M%S) docker tag img-be-nodejs ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/mvp-be-repo:$VERSION
       
-      # - name: Push Docker Image to Amazon ECR
-      #   run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/backend:latest
-      
+      - name: Build, Tag and Push Image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: mvp-be-repo
+          IMAGE_TAG: ${{ steps.tag_version.outputs.new_version  }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -f .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+
   #     # - name: Force Update on ECS
   #     #   run: aws ecs update-service --cluster mvpcluster --service backend --force-new-deployment
