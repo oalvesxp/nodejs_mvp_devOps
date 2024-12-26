@@ -8,6 +8,22 @@ on:
   pull_request:
     branches:
       - develop
+  workflow_call:
+    inputs:
+      database_name:
+        required: true
+        type: string
+      database_username:
+        required: true
+        type: string
+      database_password:
+        required: true
+        type: string
+    secrets:
+      DATABASE_USERNAME:
+        required: true
+      DATABASE_PASSWORD:
+        required: true
 
 jobs:
   integration-tests:
