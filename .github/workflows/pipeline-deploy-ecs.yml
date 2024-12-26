@@ -18,6 +18,9 @@ jobs:
   integration:
     name: E2E
     uses: ./.github/workflows/run-integration-tests.yml
+    secrets:
+      DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
   
   build:
     name: Generate Package

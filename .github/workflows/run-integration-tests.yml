@@ -2,10 +2,15 @@ name: Run Integration Tests
 
 on:
   workflow_call:
+    secrets:
+      DATABASE_USERNAME:
+        required: true
+      DATABASE_PASSWORD:
+        required: true
 
 jobs:
   integration-tests:
-    name: Integration
+    name: Run Tests
     runs-on: ubuntu-latest
     defaults: 
       run:
