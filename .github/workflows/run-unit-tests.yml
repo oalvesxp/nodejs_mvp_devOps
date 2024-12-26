@@ -5,7 +5,7 @@ on:
 
 jobs:
   unit-tests:
-    name: Unit Tests
+    name: Unit
     runs-on: ubuntu-latest
     defaults: 
       run:

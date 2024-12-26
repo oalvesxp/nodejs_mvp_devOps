@@ -1,0 +1,97 @@
+name: Pipeline Deploy ECS
+
+on:
+  push:
+    branches:
+      - develop
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+
+jobs:
+  tests:
+    name: Automated Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Unit
+        uses: ./.github/workflows/run-unit-tests.yml
+      
+      - name: E2E
+        uses: ./.github/workflows/run-integration-tests.yml
+  
+  build:
+    name: Generate Package
+    needs: tests
+    runs-on: ubuntu-latest
+    defaults: 
+      run:
+        working-directory: 'services/api'
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      
+      - name: Set up Node.js ${{ vars.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: 'services/api/package-lock.json'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build Package
+        run: npm run build
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: api
+          path: ./build
+    
+  deploy:
+    name: Deploy Hotfix
+    needs: build
+    runs-on: ubuntu-latest
+    defaults: 
+      run:
+        working-directory: 'services/api'
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Download Build Artifact
+        id: artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: api
+
+      - name: Setup AWS CLI
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login on Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, Tag and Push Image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: mvp-be-repo
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
