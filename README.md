@@ -1,5 +1,4 @@
-# MVP: Node.js + DevOps
-Minimum Viable Product
+<img src="https://i.imgur.com/jd3yX4x.png" alt="banner">
 
 Seja bem-vindo!
 
