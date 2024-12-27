@@ -9,9 +9,7 @@ env:
   AWS_REGION: us-east-1
   ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
   BACKEND_SERVICE: backend-service
-  BACKEND_TASK_DEFINITION: backend-task
   FRONTEND_SERVICE: frontend-service
-  FRONTEND_TASK_DEFINITION: frontend-task
 
 jobs:
   unit:
@@ -57,7 +55,7 @@ jobs:
           path: services/api/build
     
   backend:
-    name: 'Backend: Registry + Deploy'
+    name: 'Backend: Deploy Hotfix'
     needs: build
     runs-on: ubuntu-22.04
     defaults: 
@@ -100,16 +98,13 @@ jobs:
       - name: Download task definition
         run: |
           aws ecs describe-task-definition --task-definition ${{ env.BACKEND_TASK_DEFINITION }} \
-            --query taskDefinition > task-definition.json
-          pwd
-          ls -la
-          cat task-definition.json
+            --query taskDefinition > task-definition-backend.json
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: services/api/task-definition.json
+          task-definition: services/api/task-definition-backend.json
           container-name: backend
           image: ${{ steps.build-image.outputs.image }}
 
@@ -118,5 +113,61 @@ jobs:
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: ${{ env.BACKEND_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
+
+  frontend:
+    name: 'Frontend: Deploy Hotfix'
+    needs: build
+    runs-on: ubuntu-22.04
+    defaults: 
+      run:
+        working-directory: 'services/webapp'
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup AWS CLI
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login on Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, Tag and Push Image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: mvp-fe-repo
+          IMAGE_TAG: v${{ github.run_number }}
+          REACT_APP_API_URL: "http://mvp-ecs-alb-1788440207.us-east-1.elb.amazonaws.com"
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+      
+      - name: Download task definition
+        run: |
+          aws ecs describe-task-definition --task-definition ${{ env.BACKEND_TASK_DEFINITION }} \
+            --query taskDefinition > task-definition-frontend.json
+
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.FRONTEND_TASK_DEFINITION }}
+          container-name: 'frontend'
+          image: ${{ steps.build-image.outputs.image }}
+
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: services/api/task-definition-frontend.json
+          service: ${{ env.FRONTEND_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
