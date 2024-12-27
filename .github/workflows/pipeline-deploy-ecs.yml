@@ -100,14 +100,16 @@ jobs:
       - name: Download task definition
         run: |
           aws ecs describe-task-definition --task-definition ${{ env.BACKEND_TASK_DEFINITION }} \
-            --query taskDefinition > services/api/task-definition-backend.json
+            --query taskDefinition > task-definition.json
+          pwd
+          ls -la
           cat task-definition.json
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: services/api/task-definition-backend.json
+          task-definition: services/api/task-definition.json
           container-name: backend
           image: ${{ steps.build-image.outputs.image }}
 
