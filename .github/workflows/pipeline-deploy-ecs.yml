@@ -9,7 +9,7 @@ env:
   AWS_REGION: us-east-1
   ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
   BACKEND_SERVICE: backend-service
-  BACKEND_TASK_DEFINITION: backend-task
+  BACKEND_TASK_DEFINITION: arn:aws:ecs:us-east-1:831511089306:task-definition/backend-task:12
   FRONTEND_SERVICE: backend-service
   FRONTEND_TASK_DEFINITION: backend-task
 
