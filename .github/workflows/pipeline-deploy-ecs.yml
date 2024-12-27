@@ -54,8 +54,8 @@ jobs:
           name: api
           path: services/api/build
     
-  backend-package:
-    name: 'Backend: Push to AWS Registry'
+  backend:
+    name: 'Backend: Package + Deploy Hotfix'
     needs: build
     runs-on: ubuntu-22.04
     defaults: 
@@ -97,10 +97,25 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
-          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
-  frontend-package:
-    name: 'Frontend: Push to AWS Registry'
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: 'backend-task'
+          container-name: 'backend'
+          image: ${{ steps.build-image.outputs.image }}
+
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: 'backend-service'
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
+
+  frontend:
+    name: 'Frontend: Package + Deploy Hotfix'
     needs: build
     runs-on: ubuntu-22.04
     defaults: 
@@ -134,34 +149,18 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-  deploy-backend:
-    name: 'Backend: Deploy Hotfix'
-    needs: [backend-package]
-    runs-on: ubuntu-22.04
-    
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Setup AWS CLI
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-      
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: 'backend-task'
-          container-name: 'backend'
-          image: ${{ needs.backend-package.outputs.image }}
+          task-definition: 'frontend-task'
+          container-name: 'frontend'
+          image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: 'backend-service'
+          service: 'frontend-service'
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
