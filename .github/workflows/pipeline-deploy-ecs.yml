@@ -6,10 +6,12 @@ on:
       - develop
 
 env:
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+  AWS_REGION: us-east-1
   ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
+  BACKEND_SERVICE: backend-service
+  BACKEND_TASK_DEFINITION: backend-task
+  FRONTEND_SERVICE: backend-service
+  FRONTEND_TASK_DEFINITION: backend-task
 
 jobs:
   unit:
@@ -55,7 +57,7 @@ jobs:
           path: services/api/build
     
   backend:
-    name: 'Backend: Package + Deploy Hotfix'
+    name: 'Backend: Registry + Deploy'
     needs: build
     runs-on: ubuntu-22.04
     defaults: 
@@ -81,7 +83,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Login on Amazon ECR
         id: login-ecr
@@ -102,7 +104,7 @@ jobs:
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: backend-task
+          task-definition: ${{ env.BACKEND_TASK_DEFINITION }}
           container-name: backend
           image: ${{ steps.build-image.outputs.image }}
 
@@ -110,12 +112,12 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: backend-service
+          service: ${{ env.BACKEND_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
 
   frontend:
-    name: 'Frontend: Package + Deploy Hotfix'
+    name: 'Frontend: Registry + Deploy'
     needs: build
     runs-on: ubuntu-22.04
     defaults: 
@@ -131,7 +133,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Login on Amazon ECR
         id: login-ecr
@@ -153,7 +155,7 @@ jobs:
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: 'frontend-task'
+          task-definition: ${{ env.FRONTEND_TASK_DEFINITION }}
           container-name: 'frontend'
           image: ${{ steps.build-image.outputs.image }}
 
@@ -161,6 +163,6 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: 'frontend-service'
+          service: ${{ env.FRONTEND_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
