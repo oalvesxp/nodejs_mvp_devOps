@@ -9,6 +9,7 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+  ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
 
 jobs:
   unit:
@@ -136,6 +137,7 @@ jobs:
     name: 'Backend: Deploy Hotfix'
     needs: [backend-package]
     runs-on: ubuntu-22.04
+    
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -146,26 +148,19 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
+      
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: 'backend-task'
+          container-name: 'backend'
+          image: ${{ needs.backend-package.outputs.image }}
 
-      - name: Login on Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
-
-      - name: Deploy Backend Code to ECS
-        id: deploy
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: mvp-be-repo
-          IMAGE_TAG: ${{ github.run_number }}
-        run: |
-          IMAGE=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-
-          aws ecs describe-task-definition --task-definition backend-task > task-definition.json
-
-          jq '.containerDefinitions[0].image = "'$IMAGE'"' task-definition.json > new-task-definition.json
-
-          NEW_TASK_DEFINITION=$(aws ecs register-task-definition --cli-input-json file://new-task-definition.json)
-
-          TASK_DEFINITION_ARN=$(echo $NEW_TASK_DEFINITION | jq -r '.taskDefinition.taskDefinitionArn')
-
-          aws ecs update-service --cluster mvpcluster --service backend-service --task-definition $TASK_DEFINITION_ARN
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: 'backend-service'
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
