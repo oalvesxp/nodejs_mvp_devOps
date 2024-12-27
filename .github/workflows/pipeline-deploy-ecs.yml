@@ -8,8 +8,12 @@ on:
 env:
   AWS_REGION: us-east-1
   ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
+  
   BACKEND_SERVICE: backend-service
+  BACKEND_TASK_DEFINITION: backend-task
+
   FRONTEND_SERVICE: frontend-service
+  FRONTEND_TASK_DEFINITION: frontend-task
 
 jobs:
   unit:
@@ -97,7 +101,7 @@ jobs:
 
       - name: Download task definition
         run: |
-          aws ecs describe-task-definition --task-definition ${{ env.BACKEND_TASK_DEFINITION }} \
+          aws ecs describe-task-definition --task-definition ${{ env.FRONTEND_TASK_DEFINITION }} \
             --query taskDefinition > task-definition-backend.json
 
       - name: Fill in the new image ID in the Amazon ECS task definition
