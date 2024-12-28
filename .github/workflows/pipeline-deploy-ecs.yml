@@ -10,8 +10,6 @@ env:
   ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
   BACKEND_SERVICE: backend-service
   BACKEND_TASK_DEFINITION: backend-task
-  FRONTEND_SERVICE: frontend-service
-  FRONTEND_TASK_DEFINITION: frontend-task
 
 jobs:
   unit:

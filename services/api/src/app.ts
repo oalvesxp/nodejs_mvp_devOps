@@ -28,7 +28,7 @@ app.register(fastifyCors, {
 app.register(fastifySwagger, {
   openapi: {
     info: {
-      title: 'Tasks+ API',
+      title: 'Tasks+ API v2',
       version: '1.4.1'
     }
   },
