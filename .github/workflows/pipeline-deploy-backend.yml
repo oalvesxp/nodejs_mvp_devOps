@@ -1,4 +1,4 @@
-name: Pipeline Deploy ECS
+name: Pipeline Deploy Backend
 
 on:
   push:
@@ -8,8 +8,8 @@ on:
 env:
   AWS_REGION: us-east-1
   ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
-  BACKEND_SERVICE: backend-service
-  BACKEND_TASK_DEFINITION: backend-task
+  SERVICE: backend-service
+  TASK_DEFINITION: backend-task
 
 jobs:
   unit:
@@ -97,7 +97,7 @@ jobs:
       
       - name: Download task definition
         run: |
-          aws ecs describe-task-definition --task-definition ${{ env.BACKEND_TASK_DEFINITION }} \
+          aws ecs describe-task-definition --task-definition ${{ env.TASK_DEFINITION }} \
             --query taskDefinition > task-definition.json
       
       - name: Fill in the new image ID in the Amazon ECS task definition
@@ -112,6 +112,6 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: ${{ env.BACKEND_SERVICE }}
+          service: ${{ env.SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
