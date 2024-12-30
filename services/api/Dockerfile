@@ -1,6 +1,6 @@
 # production
 FROM node:20.18.1-alpine AS production
-WORKDIR /usr/src
+WORKDIR /usr/node/app
 
 RUN apk add --no-cache \
   openssl \
@@ -14,11 +14,11 @@ RUN npm ci --production
 COPY --chown=node:node prisma ./prisma
 RUN npx prisma generate
 
-COPY --chown=node:node build/ /usr/src/build
+COPY --chown=node:node build/ /usr/node/app/build
 
 ENV NODE_ENV=production
 
-EXPOSE 9080
+EXPOSE 3000
 USER node
 
 CMD [ "npm", "start" ]

@@ -45,7 +45,7 @@ function Tasks() {
   }
 
   async function handleDeleteTask(id: string) {
-    await fetch(`${process.env.REACT_APP_API_URL}:3000/tasks/` + id, {
+    await fetch(`${'http://mvp-ecs-alb-2064991025.us-east-1.elb.amazonaws.com'}:3000/tasks/` + id, {
       method: 'DELETE'
     })
 

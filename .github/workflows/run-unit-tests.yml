@@ -1,33 +1,24 @@
 name: Run Unit Tests
 
 on:
-  push:
-    branches:
-      - develop
-      - master
-  pull_request:
-    branches:
-      - develop
+  workflow_call:
 
 jobs:
   unit-tests:
-    name: Unit Tests
-    runs-on: ubuntu-latest
+    name: Unit
+    runs-on: ubuntu-22.04
     defaults: 
       run:
         working-directory: 'services/api'
-    strategy:
-      matrix:
-        node-version: [20.18.1]
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js ${{ matrix.node-version }}
+      - name: Set up Node.js ${{ vars.NODE_VERSION }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ vars.NODE_VERSION }}
           cache: npm
           cache-dependency-path: 'services/api/package-lock.json'
 
