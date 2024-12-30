@@ -3,7 +3,7 @@ name: Pipeline Deploy Frontend
 on:
   push:
     branches:
-      - develop
+      - master
 
 env:
   AWS_REGION: us-east-1
