@@ -20,7 +20,7 @@ export type healthCheckResponse = {
 export const getHealthCheckUrl = () => {
 
 
-  return `http://mvp-ecs-alb-674881885.us-east-1.elb.amazonaws.com:3000/metrics/health`
+  return `http://mvp-ecs-alb-97805771.us-east-1.elb.amazonaws.com:3000/metrics/health`
 }
 
 export const healthCheck = async ( options?: RequestInit): Promise<healthCheckResponse> => {
