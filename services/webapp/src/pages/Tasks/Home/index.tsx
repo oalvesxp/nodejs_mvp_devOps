@@ -45,7 +45,7 @@ function Tasks() {
   }
 
   async function handleDeleteTask(id: string) {
-    await fetch(`${'http://mvp-ecs-alb-674881885.us-east-1.elb.amazonaws.com'}:3000/tasks/` + id, {
+    await fetch(`${'http://mvp-ecs-alb-97805771.us-east-1.elb.amazonaws.com'}:3000/tasks/` + id, {
       method: 'DELETE'
     })
 

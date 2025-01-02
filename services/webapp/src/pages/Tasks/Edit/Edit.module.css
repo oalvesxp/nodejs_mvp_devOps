@@ -99,6 +99,10 @@ textarea {
   transition: opacity 0.2s;
 }
 
+.button__uncompleted {
+  background-color: #cc0000;
+}
+
 @media screen and (max-width: 580px) {
   .section__form {
     max-width: 400px;

@@ -96,10 +96,10 @@ function EditTask() {
 
               <button
                 type="button"
-                className={styles.button__complete}
+                className={`${styles.button__complete} ${task?.completed_at ? styles.button__uncompleted : ''}`}
                 onClick={() => task && handleCompleteTask(task.id)}
               >
-                Encerrar tarefa
+                {task?.completed_at ? 'Marcar tarefa como pendente' : 'Marcar tarefa como concluída'}
               </button>
 
               <button
