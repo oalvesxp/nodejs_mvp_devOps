@@ -27,7 +27,7 @@ export type createTaskResponse = {
 export const getCreateTaskUrl = () => {
 
 
-  return `http://mvp-ecs-alb-2064991025.us-east-1.elb.amazonaws.com:3000/tasks/`
+  return `http://mvp-ecs-alb-674881885.us-east-1.elb.amazonaws.com:3000/tasks/`
 }
 
 export const createTask = async (createTaskBody: CreateTaskBody, options?: RequestInit): Promise<createTaskResponse> => {
@@ -60,7 +60,7 @@ export type fetchTasksResponse = {
 export const getFetchTasksUrl = () => {
 
 
-  return `http://mvp-ecs-alb-2064991025.us-east-1.elb.amazonaws.com:3000/tasks/`
+  return `http://mvp-ecs-alb-674881885.us-east-1.elb.amazonaws.com:3000/tasks/`
 }
 
 export const fetchTasks = async ( options?: RequestInit): Promise<fetchTasksResponse> => {
@@ -92,7 +92,7 @@ export type getTaskResponse = {
 export const getGetTaskUrl = (id: string,) => {
 
 
-  return `http://mvp-ecs-alb-2064991025.us-east-1.elb.amazonaws.com:3000/tasks/${id}`
+  return `http://mvp-ecs-alb-674881885.us-east-1.elb.amazonaws.com:3000/tasks/${id}`
 }
 
 export const getTask = async (id: string, options?: RequestInit): Promise<getTaskResponse> => {
@@ -124,7 +124,7 @@ export type updateTaskResponse = {
 export const getUpdateTaskUrl = (id: string,) => {
 
 
-  return `http://mvp-ecs-alb-2064991025.us-east-1.elb.amazonaws.com:3000/tasks/${id}`
+  return `http://mvp-ecs-alb-674881885.us-east-1.elb.amazonaws.com:3000/tasks/${id}`
 }
 
 export const updateTask = async (id: string,
@@ -158,7 +158,7 @@ export type deleteTaskResponse = {
 export const getDeleteTaskUrl = (id: string,) => {
 
 
-  return `http://mvp-ecs-alb-2064991025.us-east-1.elb.amazonaws.com:3000/tasks/${id}`
+  return `http://mvp-ecs-alb-674881885.us-east-1.elb.amazonaws.com:3000/tasks/${id}`
 }
 
 export const deleteTask = async (id: string, options?: RequestInit): Promise<deleteTaskResponse> => {
@@ -190,7 +190,7 @@ export type completeTaskResponse = {
 export const getCompleteTaskUrl = (id: string,) => {
 
 
-  return `http://mvp-ecs-alb-2064991025.us-east-1.elb.amazonaws.com:3000/tasks/${id}/complete`
+  return `http://mvp-ecs-alb-674881885.us-east-1.elb.amazonaws.com:3000/tasks/${id}/complete`
 }
 
 export const completeTask = async (id: string, options?: RequestInit): Promise<completeTaskResponse> => {
